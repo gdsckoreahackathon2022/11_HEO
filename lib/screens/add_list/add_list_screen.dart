@@ -39,7 +39,12 @@ class _AddListScreenState extends State<AddListScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 1.0,
+        elevation: 0.0,
+          title: Image.asset(
+            'assets/logo_img.png',
+            width: 90,
+          ),
+          centerTitle: true,
         actions: [
           TextButton(
               onPressed: () {
@@ -75,10 +80,14 @@ class _AddListScreenState extends State<AddListScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
+              child: Icon(Icons.photo_library_outlined, color: Colors.white,),
+              backgroundColor: Colors.green.shade300,
               heroTag: 'auto',
               onPressed: getImage),
             SizedBox(height: 20),
             FloatingActionButton(
+              child: Icon(Icons.add, color: Colors.white,),
+              backgroundColor: Colors.blue.shade300,
               heroTag: 'manual',
               onPressed: () {
               if (tf) {

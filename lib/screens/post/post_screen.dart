@@ -34,7 +34,25 @@ class PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false, // textfield overflow xxxxxxxx
-      appBar: AppBar(title: Text("Post")),
+      appBar: AppBar(
+        elevation: 1.0,
+        backgroundColor: Colors.white,
+          title: Image.asset(
+            'assets/logo_img.png',
+            width: 90,
+          ),
+          centerTitle: true,
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                size: 30,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+      ),
       body: RefreshIndicator(
           // StreamBuilder를 이용해서 text 컬렉션을 바인딩학고 document를 ListView로 UI에 뿌려주게 된다.
           onRefresh: refreshList,
@@ -42,6 +60,7 @@ class PostScreenState extends State<PostScreen> {
       // Create Document
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
+          backgroundColor: Colors.green.shade300,
           onPressed: () {
             Get.toNamed("/edit", arguments: {
               "postId": "",

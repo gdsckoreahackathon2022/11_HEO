@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:study/screens/add_list/add_list_screen.dart';
+import 'package:study/screens/login_screen.dart';
 import 'package:study/screens/post/post_screen.dart';
 //필요없는 창이라 다 구현X
 
@@ -16,19 +17,49 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Welcome"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20),
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          title: Image.asset(
+            'assets/logo_img.png',
+            width: 90,
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.exit_to_app_outlined,
+                size: 30,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                LoginScreen();
+              },
+            )
+          ]),
+      body: SingleChildScrollView(
+        child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: 180,
-                child: Image.asset("assets/logo.png", fit: BoxFit.contain),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MaterialButton(
+          color: Colors.green.shade300,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddListScreen()));
+                  },
+                  child: Text('addList'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30.0)
+                    )
+                  ),
+                  ),
+                  SizedBox(width: 10,),
+                ],
               ),
               Text(
                 "Welcome Back",
@@ -37,21 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
-              Text("Name",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("Email",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              SizedBox(
-                height: 15,
-              ),
-              ActionChip(label: Text("Logout"), onPressed: () {}),
-
 
               // 판매 게시글 목록 버튼
               ElevatedButton(
@@ -63,9 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Text('PostScrren'),
               ),
-              ElevatedButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddListScreen()));
-              }, child: Text('addList'))
+              
             ],
           ),
         ),
