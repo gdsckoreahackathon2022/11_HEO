@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  cloud_firestore: ^3.1.7
+  cloud_firestore: ^3.1.7 # firestore
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.3.6
   firebase_core: ^1.12.0
@@ -29,6 +29,13 @@ dependencies:
     sdk: flutter
   fluttertoast: ^8.0.8
   syncfusion_flutter_datepicker: ^19.4.47
+  intl: ^0.17.0 # date
+  get: ^4.6.1 # getX
+  multi_image_picker2: ^5.0.2 # 여러개의 사진 저장
+  firebase_storage: ^10.2.6 # firebase 
+  path_provider: ^2.0.8 # 경로
+  card_swiper: ^2.0.1 # swiper
+  sn_progress_dialog: ^1.0.3 # progress_dialog
 
 dev_dependencies:
   flutter_test:

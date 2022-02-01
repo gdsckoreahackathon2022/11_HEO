@@ -177,6 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
           .then((uid) => {
                 // Fluttertoast.showToast(msg: "Login Successful!"),
                 Fluttertoast.showToast(msg: "로그인 성공!"),
+
+            
                 Navigator.of(context).pushReplacement( //뒤로가기 하고싶으면 push로 바꾸기(코드 계속 재실행시키기 귀찮으니까..?)
                     MaterialPageRoute(builder: (context) => HomeScreen())),
               })
