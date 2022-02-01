@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:study/screens/post/post_screen.dart';
 //필요없는 창이라 다 구현X
 
 class HomeScreen extends StatefulWidget {
@@ -48,6 +50,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 15,
               ),
               ActionChip(label: Text("Logout"), onPressed: () {}),
+
+
+              // 판매 게시글 목록 버튼
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PostScreen()),
+                  );
+                },
+                child: Text('PostScrren'),
+              )
             ],
           ),
         ),
