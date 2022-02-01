@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:study/screens/add_list/add_list_screen.dart';
 import 'package:study/screens/post/post_screen.dart';
 //필요없는 창이라 다 구현X
 
@@ -61,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 child: Text('PostScrren'),
-              )
+              ),
+              ElevatedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddListScreen()));
+              }, child: Text('addList'))
             ],
           ),
         ),

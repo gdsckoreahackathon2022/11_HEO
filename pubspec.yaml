@@ -36,6 +36,8 @@ dependencies:
   path_provider: ^2.0.8 # 경로
   card_swiper: ^2.0.1 # swiper
   sn_progress_dialog: ^1.0.3 # progress_dialog
+  image_picker: ^0.8.4+5
+  flutter_tesseract_ocr: ^0.4.19
 
 dev_dependencies:
   flutter_test:
