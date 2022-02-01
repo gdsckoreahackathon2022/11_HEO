@@ -20,12 +20,15 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  Color _primaryColor = Colors.green.shade300;
+  Color _accentColor = Colors.blue.shade300;
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Email and PW Login',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: _primaryColor,
+        accentColor: _accentColor
       ),
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),

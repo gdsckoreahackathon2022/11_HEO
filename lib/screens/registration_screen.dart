@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:study/model/user_model.dart';
 import 'package:study/screens/home_screen.dart';
+import 'package:study/model/helper_widget.dart';
 
 //주석은 코드 해석 및 어떤 코드를 쓸지 고민할 떄 사용
 
@@ -23,6 +24,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
   final confirmpwEditingController = new TextEditingController();
   final nicknameEditingController = new TextEditingController();
   final phoneEditingController = new TextEditingController();
+
+  double _headerHeight = 200;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +172,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
     final SignUpButton = Material(
       elevation: 5, //버튼에 그림자
       borderRadius: BorderRadius.circular(30), //버튼을 둥글게
-      color: Colors.redAccent,
+      color: Colors.green.shade400,
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           //MediaQuery는 화면 크기를 얻기 위해 사용하는 클래스
@@ -181,28 +184,27 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
             "SignUp",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
           )),
     );
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.red,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
       body: Center(
         child: SingleChildScrollView(
-          child: Container(
+          child: Column(
+            children: [
+              Stack(
+              children:<Widget>[
+              Container(
+                height: 200,
+                child: HeaderWidget(_headerHeight, true, Image.asset('assets/logo_img.png'))
+            ),Container(
+              child: Column(children: [SizedBox(height: 20,),
+            IconButton(onPressed: (){ Navigator.of(context).pop();}, icon: Icon(Icons.arrow_back))],)
+          )]),              
+              SafeArea(
+                child: Container(
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(36.0), //가로폭이 줄어듦
@@ -212,40 +214,35 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      height: 200,
-                      child: Image.asset(
-                        ("assets/logo.png"),
-                        fit: BoxFit
-                            .contain, //BoxFit(사진 옵션), contain: 원본, 가로 세로 비율 변화 없음.
-                      ),
-                    ),
-                    SizedBox(
-                      height: 45,
-                    ),
+                    Row(
+                        children: [
+                          SizedBox(width: 10,),
+                          Text("Sign up", textAlign: TextAlign.left, 
+                          style: TextStyle(fontSize: 20,  fontWeight: FontWeight.bold),)]),
+                    SizedBox(height: 20,),                    
                     emailField,
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     pwField,
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     confirmpwField,
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     nicknameField,
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     phoneField,
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     SignUpButton,
                     SizedBox(
-                      height: 15,
+                      height: 5,
                     ),
                   ],
                 ),
@@ -253,8 +250,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
             ),
           ),
         ),
-      ),
-    );
+            ])),
+    ));
   }
 
   void signUp(String email, String password) async {

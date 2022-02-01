@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:study/screens/home_screen.dart';
 import 'package:study/screens/registration_screen.dart';
+import 'package:study/model/helper_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  double _headerHeight = 200;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = new TextEditingController();
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = Material(
       elevation: 5, //버튼에 그림자
       borderRadius: BorderRadius.circular(30), //버튼을 둥글게
-      color: Colors.redAccent,
+      color: Colors.green.shade400,
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           //MediaQuery는 화면 크기를 얻기 위해 사용하는 클래스
@@ -100,71 +102,74 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0), //가로폭이 줄어듦
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 200,
-                      child: Image.asset(
-                        ("assets/logo.png"),
-                        fit: BoxFit
-                            .contain, //BoxFit(사진 옵션), contain: 원본, 가로 세로 비율 변화 없음.
+      body: SingleChildScrollView(
+          child: Column(
+            children: [Stack(
+              children:<Widget>[
+              Container(
+                height: 200,
+                child: HeaderWidget(_headerHeight, true, Image.asset('assets/logo_img.png'))
+            )]),            
+          SafeArea(
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0), //가로폭이 줄어듦
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: [
+                          SizedBox(width: 10,),
+                          Text("Login", textAlign: TextAlign.left, 
+                          style: TextStyle(fontSize: 20,  fontWeight: FontWeight.bold),)]),
+                      SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    SizedBox(
-                      height: 45,
-                    ),
-                    emailField,
-                    SizedBox(
-                      height: 25,
-                    ),
-                    pwField,
-                    SizedBox(
-                      height: 35,
-                    ),
-                    loginButton,
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Don't have an account? "),
-                        GestureDetector(
-                          //사용자의 동작 감지(버튼이 아닌 위젯을 버튼처럼 사용할 수 있게 해줌)
-                          // InkWell과 기능은 똑같지만 눌렀을 떄 애니메이션 효과 유무의 차이가 있음
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        RegisterationScreen()));
-                          },
-                          child: Text(
-                            "SignUp",
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
+                      emailField,
+                      SizedBox(
+                        height: 25,
+                      ),
+                      pwField,
+                      SizedBox(
+                        height: 35,
+                      ),
+                      loginButton,
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Don't have an account? "),
+                          GestureDetector(
+                            //사용자의 동작 감지(버튼이 아닌 위젯을 버튼처럼 사용할 수 있게 해줌)
+                            // InkWell과 기능은 똑같지만 눌렀을 떄 애니메이션 효과 유무의 차이가 있음
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          RegisterationScreen()));
+                            },
+                            child: Text(
+                              "SignUp",
+                              style: TextStyle(
+                                  color: Colors.redAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+            ]),
       ),
     );
   }
