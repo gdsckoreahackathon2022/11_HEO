@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:study/screens/add_list/add_list_screen.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.black,
               ),
               onPressed: () {
-                LoginScreen();
+                logout(context);
               },
             )
           ]),
@@ -44,21 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   MaterialButton(
-          color: Colors.green.shade300,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddListScreen()));
-                  },
-                  child: Text('addList'),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30.0)
-                    )
+                    color: Colors.green.shade300,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddListScreen()));
+                    },
+                    child: Text('addList'),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
                   ),
+                  SizedBox(
+                    width: 10,
                   ),
-                  SizedBox(width: 10,),
                 ],
               ),
               Text(
@@ -77,13 +77,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(builder: (context) => PostScreen()),
                   );
                 },
-                child: Text('PostScrren'),
+                child: Text('PostScreen'),
               ),
-              
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }
