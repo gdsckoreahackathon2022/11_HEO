@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:study/model/list_item.dart';
 import 'package:study/screens/add_list/list_item_widget.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,12 +41,11 @@ class _AddListScreenState extends State<AddListScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-          title: Image.asset(
-            'assets/logo_img.png',
-            width: 90,
-          ),
-          leading: IconButton(onPressed: (){ Navigator.of(context).pop();}, icon: Icon(Icons.arrow_back), color: Colors.black,),
-          centerTitle: true,
+        title: Image.asset(
+          'assets/logo_img.png',
+          width: 90,
+        ),
+        centerTitle: true,
         actions: [
           TextButton(
               onPressed: () {
@@ -81,31 +81,52 @@ class _AddListScreenState extends State<AddListScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              child: Icon(Icons.photo_library_outlined, color: Colors.white,),
-              backgroundColor: Colors.green.shade300,
-              heroTag: 'auto',
-              onPressed: getImage),
+                child: Icon(
+                  Icons.photo_library_outlined,
+                  color: Colors.white,
+                ),
+                backgroundColor: Colors.green.shade300,
+                heroTag: 'auto',
+                onPressed: (){
+                  if (tf) {
+                    setState(() {
+                      view = AnimatedList(
+                          key: key,
+                          initialItemCount: products.length,
+                          itemBuilder: (context, index, animation) =>
+                              listItemWidget(
+                                  item: products[index],
+                                  animation: animation,
+                                  onClicked: () => removeItem(index)));
+                      tf = false;
+                    });
+                  }
+                  getImage();
+                }),
             SizedBox(height: 20),
             FloatingActionButton(
-              child: Icon(Icons.add, color: Colors.white,),
-              backgroundColor: Colors.blue.shade300,
-              heroTag: 'manual',
-              onPressed: () {
-              if (tf) {
-                setState(() {
-                  view = AnimatedList(
-                      key: key,
-                      initialItemCount: products.length,
-                      itemBuilder: (context, index, animation) =>
-                          listItemWidget(
-                              item: products[index],
-                              animation: animation,
-                              onClicked: () => removeItem(index)));
-                  tf = false;
-                });
-              }
-              makeTile();
-            })
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                backgroundColor: Colors.blue.shade300,
+                heroTag: 'manual',
+                onPressed: () {
+                  if (tf) {
+                    setState(() {
+                      view = AnimatedList(
+                          key: key,
+                          initialItemCount: products.length,
+                          itemBuilder: (context, index, animation) =>
+                              listItemWidget(
+                                  item: products[index],
+                                  animation: animation,
+                                  onClicked: () => removeItem(index)));
+                      tf = false;
+                    });
+                  }
+                  makeTile();
+                })
           ],
         ),
       ),
@@ -118,6 +139,7 @@ class _AddListScreenState extends State<AddListScreen> {
     ImagePicker picker = ImagePicker();
     var image = await picker.pickImage(source: ImageSource.gallery);
 
+  
     /*
       tesseract를 통해 영수증 이미지에서 텍스트 추출(인식 언어는 한국어+영어)
       psm 값은 4,6,11이 한국어 인식 가능 번호
@@ -132,7 +154,7 @@ class _AddListScreenState extends State<AddListScreen> {
             "psm": "4",
             "preserve_interword_spaces": "1", //단어 간격 옵션 조절
           });
-      print(text);
+      classifyItem(text);
     }
   }
 
@@ -144,9 +166,11 @@ class _AddListScreenState extends State<AddListScreen> {
   }
 
   add2Firebase(ListItem item) {
-    FirebaseFirestore.instance
-        .collection('List')
-        .add({'user': auth.currentUser!.uid, 'name': '${item.name}', 'date': '${item.date}'});
+    FirebaseFirestore.instance.collection('List').add({
+      'user': auth.currentUser!.uid,
+      'name': '${item.name}',
+      'date': '${item.date}'
+    });
   }
 
   //리스트에서 아이템 제거
@@ -179,10 +203,6 @@ class _AddListScreenState extends State<AddListScreen> {
         .insertItem(newIndex, duration: Duration(milliseconds: 400));
   }
 
-  selectDate(){
-
-  }
-
   //아이템 추가 다이얼로그 창
   void makeTile() {
     showDialog(
@@ -193,11 +213,23 @@ class _AddListScreenState extends State<AddListScreen> {
         });
   }
 
-  insertButton(){
-    return ElevatedButton(onPressed: (){
-      insertItem(textController.text);
-      Navigator.pop(context);
-      textController.clear();
-    }, child: Text('추가'));
+  insertButton() {
+    return ElevatedButton(
+        onPressed: () {
+          insertItem(textController.text);
+          Navigator.pop(context);
+          textController.clear();
+        },
+        child: Text('추가'));
+  }
+
+  classifyItem(String text) async {
+    List<String> a = await rootBundle
+        .loadString('assets/types.txt')
+        .then((value) => value.split('\n'));
+    for (int i = 0; i < a.length; i++) {
+      RegExp exp = new RegExp(a[i], caseSensitive: false);
+      if (exp.hasMatch(text)) insertItem(a[i]);
+    }
   }
 }
