@@ -101,75 +101,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 400,
                           child: Divider(
                               color: Colors.grey.shade300, thickness: 1.0)),
-                      SizedBox(
-                        height: 10,
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Food ingredients',
+                                  style: TextStyle(
+                                      color: Colors.green.shade600,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
+                              
+                              MaterialButton(
+                                color: Colors.green.shade300,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddListScreen()));
+                                },
+                                child: Text('addList'),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30.0))),
+                              ),
+                            ]),
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Food ingredients',
-                                style: TextStyle(
-                                    color: Colors.green.shade600,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(
-                              width: 150,
-                            ),
-                            MaterialButton(
-                              color: Colors.green.shade300,
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddListScreen()));
-                              },
-                              child: Text('addList'),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30.0))),
-                            ),
-                          ]),
                       SizedBox(
                         width: 10,
                       ),
-                      /* StreamBuilder<QuerySnapshot>(
-                        
-                          stream: FirebaseFirestore.instance
-                              .collection('List')
-                              .snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            }
-                            return Container(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: snapshot.data?.docs.length,
-                                  itemBuilder: (context, index) => Card(
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                child: Column(
-                                                  children: [
-                                                    Text(snapshot.data
-                                                        ?.docs[index]['date'])
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                            );
-                          }) */
+                      
                     ],
                   ),
                 ),
