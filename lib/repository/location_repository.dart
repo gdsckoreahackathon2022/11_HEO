@@ -44,7 +44,7 @@ class LocationRepository {
     return await getCurrentAddr(position.latitude, position.longitude);
   }
 
-  var gpsApiKey = "apiKey";
+  var gpsApiKey = "AIzaSyCWRscqA3Bp4U1DzY5xWhJh7751ILDaYOE";
 
   Future getCurrentAddr(x, y) async {
     // 현재 좌표로 주소 구하기

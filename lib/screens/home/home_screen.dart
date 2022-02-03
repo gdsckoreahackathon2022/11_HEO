@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:study/repository/location_repository.dart';
 import 'package:study/screens/add_list/add_list_screen.dart';
 import 'package:study/screens/login_screen.dart';
+import 'package:study/screens/post/post_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
   // 주소
   late String currentPosition;
   bool _isLoding = false;
+  int _currentIndex = 0;
+  
+  final List<Widget> tabs = <Widget>[
+    HomeScreen(),
+    PostScreen(),
+    PostScreen(),
+  ];
+
+  
 
   @override
   void initState() {
@@ -73,16 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // 판매 게시글 목록 버튼
-                          ElevatedButton(
-                            onPressed: () {
-                              // 판매 게시글에 현재 사용자의 주소를 보냄.
-                              Get.toNamed("post", arguments: {
-                                "currentPosition": currentPosition
-                              });
-                            },
-                            child: Text('PostScreen'),
-                          ),
                           MaterialButton(
                             color: Colors.green.shade300,
                             onPressed: () {
@@ -149,7 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(
                         width: 10,
                       ),
-                      StreamBuilder<QuerySnapshot>(
+                      /* StreamBuilder<QuerySnapshot>(
+                        
                           stream: FirebaseFirestore.instance
                               .collection('List')
                               .snapshots(),
@@ -182,14 +183,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       )),
                             );
-                          })
+                          }) */
                     ],
                   ),
                 ),
               )
             : Center(
                 child: CircularProgressIndicator(),
-              ));
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: _currentIndex,
+                type: BottomNavigationBarType.fixed,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    title: Text('Home'),
+                    backgroundColor: Colors.green.shade300),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.star),
+                    title: Text('Community'),
+                    backgroundColor: Colors.green.shade300),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    title: Text('my'),
+                    backgroundColor: Colors.green.shade300),
+                ],
+                onTap: (index){
+                  setState(() {
+                    _currentIndex = index;
+                  });
+
+                },
+              ),);
   }
 
   Future<void> logout(BuildContext context) async {
