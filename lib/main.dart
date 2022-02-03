@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:study/screens/home_screen.dart';
+import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/login_screen.dart';
 import 'package:get/get.dart';
 import 'package:study/screens/post/edit_screen.dart';

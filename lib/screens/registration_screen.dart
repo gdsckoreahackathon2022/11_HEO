@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:study/model/user_model.dart';
-import 'package:study/screens/home_screen.dart';
+import 'package:study/screens/home/home_screen.dart';
 import 'package:study/model/helper_widget.dart';
 
 //주석은 코드 해석 및 어떤 코드를 쓸지 고민할 떄 사용

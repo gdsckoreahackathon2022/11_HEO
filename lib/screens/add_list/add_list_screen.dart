@@ -44,6 +44,7 @@ class _AddListScreenState extends State<AddListScreen> {
             'assets/logo_img.png',
             width: 90,
           ),
+          leading: IconButton(onPressed: (){ Navigator.of(context).pop();}, icon: Icon(Icons.arrow_back), color: Colors.black,),
           centerTitle: true,
         actions: [
           TextButton(

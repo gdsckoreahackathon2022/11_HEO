@@ -45,7 +45,6 @@ class PostScreenState extends State<PostScreen> {
           leading: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: 30,
                 color: Colors.black,
               ),
               onPressed: () {
@@ -59,7 +58,7 @@ class PostScreenState extends State<PostScreen> {
           child: _buildBody(context)),
       // Create Document
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: Colors.white,), 
           backgroundColor: Colors.green.shade300,
           onPressed: () {
             Get.toNamed("/edit", arguments: {

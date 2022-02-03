@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:study/screens/home_screen.dart';
+import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/registration_screen.dart';
 import 'package:study/model/helper_widget.dart';
 
