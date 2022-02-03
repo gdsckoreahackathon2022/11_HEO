@@ -147,7 +147,6 @@ class PostScreenState extends State<PostScreen> {
                   children: <Widget>[
                     // 제목
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
                       child: Text(currModel.title.toString(),
                           style: TextStyle(
                             color: Colors.blueGrey,

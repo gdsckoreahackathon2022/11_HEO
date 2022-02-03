@@ -16,6 +16,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LocationRepository _locationRepository = LocationRepository();
+  late String currentPosition;
+  
   double _headerHeight = 200;
   final _formKey = GlobalKey<FormState>();
 
@@ -30,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     // 위치 권한 확인
     _locationRepository.determinePosition();
+    locationCheck().then((value) async => {});
   }
 
   @override
@@ -206,5 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Fluttertoast.showToast(msg: e!.message);
       });
     }
+  }
+  Future locationCheck() async {
+    currentPosition = await _locationRepository.getCurrentLocation();
   }
 }

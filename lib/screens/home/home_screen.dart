@@ -15,20 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  LocationRepository _locationRepository = LocationRepository();
-
-  // 주소
-  late String currentPosition;
-  bool _isLoding = false;
+  bool _isLoding = true;
 
   @override
   void initState() {
     super.initState();
-    // 위치 권한 확인
-    _locationRepository.determinePosition();
-
-    // 비동기를 통해 주소 응답을 기다려줌.
-    locationCheck().then((value) async => {});
   }
 
   @override
@@ -53,17 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   logout(context);
                 },
               ),
-              IconButton(
-                  onPressed: () {
-                    // 판매 게시글에 현재 사용자의 주소를 보냄.
-                    Get.toNamed("post",
-                        arguments: {"currentPosition": currentPosition});
-                  },
-                  icon: Icon(
-                    Icons.ac_unit_outlined,
-                    size: 30,
-                    color: Colors.black,
-                  ))
+              
             ]),
         body: _isLoding
             ? SingleChildScrollView(
@@ -146,15 +127,5 @@ class _HomeScreenState extends State<HomeScreen> {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
-
-  // 현재 위치를 주소로 변환
-  Future locationCheck() async {
-    currentPosition = await _locationRepository.getCurrentLocation();
-
-    // 주소를 받아왔다면 _isLoding => true
-    setState(() {
-      _isLoding = true;
-    });
   }
 }

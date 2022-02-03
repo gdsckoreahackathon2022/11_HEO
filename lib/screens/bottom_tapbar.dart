@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:matcher/matcher.dart';
 import 'package:study/screens/add_list/add_list_screen.dart';
+import 'package:study/repository/location_repository.dart';
 import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/post/post_screen.dart';
 
@@ -12,16 +13,29 @@ class tap extends StatefulWidget {
 }
 
 class _tapState extends State<tap> {
+  LocationRepository _locationRepository = LocationRepository();
   int _currentindex = 0;
-  final List<Widget> _screen = [
+  late String currentPosition;
+  List<dynamic> _screen = [
     HomeScreen(),
     AddListScreen(),
-    PostScreen(),
+    PostScreen()
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _locationRepository.determinePosition();
+    locationCheck().then((value) async => {});
+  }
 
   void _onTap(int index) {
     setState(() {
-      _currentindex = index;
+      if(index<2)
+        _currentindex = index;
+      else
+        Get.toNamed("post",
+                        arguments: {"currentPosition": currentPosition});
     });
   }
 
@@ -67,5 +81,9 @@ class _tapState extends State<tap> {
             ]),
       ),
     );
+  }
+
+  Future locationCheck() async {
+    currentPosition = await _locationRepository.getCurrentLocation();
   }
 }
