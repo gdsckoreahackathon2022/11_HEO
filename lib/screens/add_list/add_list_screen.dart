@@ -213,6 +213,7 @@ class _AddListScreenState extends State<AddListScreen> {
         });
   }
 
+  //다이얼로그에 버튼 추가
   insertButton() {
     return ElevatedButton(
         onPressed: () {
@@ -223,13 +224,16 @@ class _AddListScreenState extends State<AddListScreen> {
         child: Text('추가'));
   }
 
+  //분류 작업
   classifyItem(String text) async {
     List<String> a = await rootBundle
         .loadString('assets/types.txt')
         .then((value) => value.split('\n'));
     for (int i = 0; i < a.length; i++) {
       RegExp exp = new RegExp(a[i], caseSensitive: false);
-      if (exp.hasMatch(text)) insertItem(a[i]);
+      if (exp.hasMatch(text)){
+        insertItem(a[i]);
+      }
     }
   }
 }
