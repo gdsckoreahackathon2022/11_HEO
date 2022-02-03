@@ -7,7 +7,7 @@ import 'package:study/model/comment_model.dart';
 
 class CommentScreen {
   Widget buildBody(BuildContext context, String postid) {
-    // 새로 고침 시에만 리스트를 업데이트 하기 위해 FutureBuilder 사용
+    // StreamBuilder를 통해 댓글 내용을 계속해서 업데이트
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('comments')
@@ -19,7 +19,10 @@ class CommentScreen {
         if (snapshot.hasError) return Text("Error: ${snapshot.error}");
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Colors.green,
+            ));
           default:
             return _buildList(context, snapshot.data!.docs, postid);
         }
@@ -29,7 +32,7 @@ class CommentScreen {
 
   Widget _buildList(
       BuildContext context, List<DocumentSnapshot> snapshot, postid) {
-    print(11);
+    // 댓글이 없으면
     if (snapshot.length == 0) {
       return Column(children: [
         SizedBox(
@@ -37,6 +40,8 @@ class CommentScreen {
         ),
         Text("댓글이 없습니다."),
       ]);
+      
+      // 댓글이 있으면
     } else {
       return Column(
         children: snapshot.map((DocumentSnapshot document) {
@@ -49,14 +54,15 @@ class CommentScreen {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data, postid) {
     final currModel = CommentModel.fromDocumnet(data);
 
-    DateTime currTime = currModel.datetime!.toDate();
+     // 날짜
+    DateTime currTime = currModel.datetime!.toDate(); 
     String dt = DateFormat('MM/dd kk:mm').format(currTime);
 
-    String auth_uid = CRUDController.to.authUid();
-    print("cccccccccccc${auth_uid}");
+    // 현재 유저 정보
+    String authUid = CRUDController.to.authUid(); 
 
-    print("cccccccc${data.id}");
-    print("cccbbbbb${currModel.uid}");
+    print("현재 유저 정보 : ${authUid}");
+    print("댓글 작성자 정보 : ${currModel.uid}");
     return Column(
       children: [
         ListTile(
@@ -71,6 +77,8 @@ class CommentScreen {
               ),
             ),
           ),
+
+          // 이름
           title: Text(
             currModel.name.toString(),
             overflow: TextOverflow.ellipsis,
@@ -95,7 +103,9 @@ class CommentScreen {
               ),
             ],
           ),
-          trailing: currModel.uid == auth_uid
+
+          // 유저 정보와 댓글 작성자 정보가 같으면 삭제 버튼 생성
+          trailing: currModel.uid == authUid
               ? IconButton(
                   icon: Icon(Icons.close),
                   onPressed: () async {
@@ -114,7 +124,7 @@ class CommentScreen {
                                   color: Theme.of(context).primaryColor),
                             ),
                             onPressed: () {
-                              Navigator.of(ctx).pop(false);
+                              Get.back();
                             },
                           ),
                           FlatButton(
@@ -124,7 +134,7 @@ class CommentScreen {
                                   color: Theme.of(context).primaryColor),
                             ),
                             onPressed: () {
-                              print("${data.id}");
+                              // 댓글 삭제
                               CRUDController.to.deleteComment(postid, data.id);
                               Get.back();
                             },
@@ -141,61 +151,9 @@ class CommentScreen {
         ),
       ],
     );
-
-    // Card(
-    //   elevation: 2,
-    //   child: InkWell(
-    //     // Read Document
-    //     onTap: () {},
-
-    //     onLongPress: () {},
-    //     child: Container(
-    //       padding: const EdgeInsets.all(8),
-    //       child: Row(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: <Widget>[
-    //           Padding(
-    //             padding: EdgeInsets.all(8),
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: <Widget>[
-    //                 Container(
-    //                   width: MediaQuery.of(context).size.width * 0.6,
-    //                   child: Text(currModel.name.toString(),
-    //                       style: TextStyle(
-    //                         color: Colors.blueGrey,
-    //                         fontWeight: FontWeight.bold,
-    //                       ),
-    //                       // overflow: TextOverflow.ellipsis,
-    //                       softWrap: true),
-    //                 ),
-    //                 SizedBox(
-    //                   height: 5.0,
-    //                 ),
-    //                 Container(
-    //                   width: MediaQuery.of(context).size.width * 0.6,
-    //                   child: Text(currModel.comment.toString(),
-    //                       style: TextStyle(
-    //                         color: Colors.grey,
-
-    //                       ),
-    //                       // overflow: TextOverflow.ellipsis,
-    //                       softWrap: true),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           Text(
-    //             dt.toString(),
-    //             style: TextStyle(color: Colors.grey[600]),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
+  // 날짜 정보
   String timestampToStrDateTime(Timestamp ts) {
     return DateTime.fromMicrosecondsSinceEpoch(ts.microsecondsSinceEpoch)
         .toString();

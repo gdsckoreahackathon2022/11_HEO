@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class FireStorageRepository {
-  var rnd = Random().nextInt(45) + 1;
+
+  // storage에 이미지를 저장
   firebase_storage.UploadTask uploadImageFile(String uid, File file, int idx) {
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()

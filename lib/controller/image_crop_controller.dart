@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 
@@ -54,7 +52,7 @@ class ImageCropController extends GetxController {
 
 
 
-  // crop 필요에 따라 사용
+  // crop 필요에 따라 사용 => 아마 사용 안할듯?
   // Future _cropImage(File file) async {
   //   File? croppedFile = await ImageCropper.cropImage(
   //       sourcePath: file.path,
