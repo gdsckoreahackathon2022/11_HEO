@@ -32,11 +32,11 @@ class _tapState extends State<tap> {
       bottomNavigationBar: SizedBox(
         height: 70,
         child: BottomNavigationBar(
-                backgroundColor: Colors.green.shade200,
+                backgroundColor: Colors.green.shade300,
             selectedFontSize: 10.0,
-            selectedItemColor: Color(0xff54767a),
+            selectedItemColor: Colors.green.shade900,
             unselectedFontSize: 10.0,
-            unselectedItemColor: Color(0xffbac9cb),
+            unselectedItemColor: Colors.grey.shade200,
             type: BottomNavigationBarType.fixed,
             elevation: 5.0,
             onTap: _onTap,
