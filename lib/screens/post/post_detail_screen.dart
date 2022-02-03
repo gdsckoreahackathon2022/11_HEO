@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -13,22 +13,18 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
+  CommentScreen _commentScreen = CommentScreen();
+
   var _isLoading = false;
   final _commentFocusNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _commentTextEditController = TextEditingController();
-  CommentScreen _commentScreen = CommentScreen();
 
-  // Future<void> _refreshPosts(
-  //     BuildContext context, String boardId, String postId) async {
-  //   await Provider.of<Posts>(context, listen: false).fetchAndSetPosts(boardId);
-  //   await Provider.of<Comments>(context, listen: false)
-  //       .fetchAndSetComments(postId);
-  // }
-
-  Future a() async {
-    await Future.delayed(Duration(seconds: 1)); //thread sleep 같은 역할을 함.
-  }
+  String uid = CRUDController.to.authUid(); // uid
+  String email = CRUDController.to.authEmail(); // email
+  String postId = Get.arguments["docId"].toString(); // 게시글 id
+  String currentPosition = Get.arguments["currentPosition"].toString(); // 주소
+  int price = int.parse(Get.arguments["resPrice"].toString()); // 가격
 
   @override
   void dispose() {
@@ -38,20 +34,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String uid = CRUDController.to.authUid();
-    String email = CRUDController.to.authEmail();
-    String postId = Get.arguments["docId"].toString();
-    print(postId);
-
-    print(Get.arguments["uid"]);
-
-    int price = int.parse(Get.arguments["resPrice"].toString());
-
     String resPrice =
-        "${NumberFormat('###,###,###,###').format(price).replaceAll(' ', '')}";
+        "${NumberFormat('###,###,###,###').format(price).replaceAll(' ', '')}"; // 가격을 한국 화폐 단위로 변경
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text(
           "식자재 설명",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -64,18 +52,23 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         // 글쓴이가 자기 자신이면 수정, 삭제 버튼 활성
         actions: uid == Get.arguments["uid"]
             ? <Widget>[
+                // 게시글 수정 버튼
+                // EditScreen으로 입력 정보를 전달
+                // 이미지 전달 x: 저장된 이미지는 Url 정보(String 타입)이고 EditScreen에서 보여주는 이미지는 asset 타입이라 따로 이미지는 전달하지 못함.
+                // => 하려면 url 정보를 File 타입으로 변환 후 다시 asset 타입으로 변환해야할 듯?
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
                     Get.offNamed('/edit', arguments: {
-                      'name': Get.arguments["name"],
+                      'title': Get.arguments["title"],
                       'description': Get.arguments["description"],
-                      'imageUrl': Get.arguments["imageUrl"],
                       'resPrice': price,
                       "docId": Get.arguments["docId"],
+                      "currentPosition": currentPosition
                     });
                   },
                 ),
+                // 게시글 삭제 버튼
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () async {
@@ -104,9 +97,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   color: Theme.of(context).primaryColor),
                             ),
                             onPressed: () {
-                              print(postId);
-                              CRUDController.to.deleteDoc(postId);
-                              Get.toNamed("/post");
+                              // 게시글 삭제
+                              CRUDController.to
+                                  .deleteDoc(postId, currentPosition);
+
+                              // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
+                              // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
+                              // 이동 시 주소를 전달
+                              Get.offAllNamed("/post", arguments: {
+                                "currentPosition": currentPosition
+                              });
                             },
                           ),
                         ],
@@ -123,17 +123,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             _commentFocusNode.unfocus();
           },
           child: RefreshIndicator(
-            // onRefresh: () => _refreshPosts(context, post.boardId!, id),
-            onRefresh: a,
+            onRefresh: reFresh,
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.all(8),
               child: Column(
                 children: <Widget>[
-                  // 아이콘, 익명, datetime
                   ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.white,
+
+                      // 아이콘
                       child: CircleAvatar(
                         backgroundColor: Color(0xffE6E6E6),
                         child: Icon(
@@ -142,15 +142,20 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ),
                       ),
                     ),
+
+                    // 이메일
                     title: Text(
                       email,
                       style: TextStyle(fontSize: 14),
                     ),
+
+                    // 날짜
                     subtitle: Text(
                       Get.arguments['dt'].toString(),
                       style: TextStyle(fontSize: 12),
                     ),
                   ),
+
                   // 이미지
                   Container(
                       width: MediaQuery.of(context).size.width,
@@ -188,12 +193,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     padding: EdgeInsets.all(8),
                     width: double.infinity,
                     child: Text(
-                      Get.arguments['name'].toString(),
+                      Get.arguments['title'].toString(),
                       style: TextStyle(fontWeight: FontWeight.bold),
                       textScaleFactor: 1.4,
                       textAlign: TextAlign.start,
                     ),
                   ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
                   // 내용
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -206,36 +216,25 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 1,
+                    height: 20.0,
                   ),
                   Divider(
                     thickness: 1,
                   ),
-                  // 댓글 목록
-                  // comments.isEmpty
-                  //     ?
+
+                  // 댓글
                   Column(children: [
                     _commentScreen.buildBody(context, postId),
-                    SizedBox(height: 200.0,)
+                    SizedBox(
+                      height: 200.0,
+                    )
                   ]),
-
-                  // : Column(
-                  //     children: [
-                  //       Column(
-
-                  //           children: comments
-                  //               .map((comment) => CommentItem(comment.id))
-                  //               .toList()),
-                  //       SizedBox(
-                  //         height: 100,
-                  //       )
-                  //     ],
-                  //   )
                 ],
               ),
             ),
           ),
         ),
+        // 댓글 입력
         Align(
           child: Container(
             color: Colors.white,
@@ -266,7 +265,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               ),
                             ),
                             hintText: "댓글을 입력하세요.",
-                            hintStyle: new TextStyle(color: Colors.black26),
+                            hintStyle: TextStyle(color: Colors.black26),
                             suffixIcon: _isLoading
                                 ? CircularProgressIndicator()
                                 : IconButton(
@@ -304,35 +303,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
-  // Future<void> _addComment(
-  //     String boardId, String postId, String contents) async {
-  //   final comment = Comment(
-  //       contents: contents,
-  //       postId: postId,
-  //       userId: null,
-  //       datetime: null,
-  //       id: null);
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   await Provider.of<Comments>(context, listen: false).addComment(comment);
-  //   _refreshPosts(context, boardId, postId);
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // }
-
-  // Future<void> _addNotification(String postTitle, String contents,
-  //     String postId, String receiverId) async {
-  //   final notification = noti.Notification(
-  //     title: "새로운 댓글: " + postTitle,
-  //     contents: contents,
-  //     datetime: null,
-  //     id: null,
-  //     postId: postId,
-  //     receiverId: receiverId,
-  //   );
-  //   await Provider.of<Notifications>(context, listen: false)
-  //       .addNotification(notification);
-  // }
+  // build 업데이트
+  Future reFresh() async {
+    await Future.delayed(Duration(seconds: 1)); //thread sleep 같은 역할을 함.
+    setState(() {
+      // build 업데이트
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:study/repository/location_repository.dart';
 import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/registration_screen.dart';
 import 'package:study/model/helper_widget.dart';
@@ -13,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  LocationRepository _locationRepository = LocationRepository();
   double _headerHeight = 200;
   final _formKey = GlobalKey<FormState>();
 
@@ -21,6 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //firebase
   final _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    // 위치 권한 확인
+    _locationRepository.determinePosition();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
       },
 
       onSaved: (value) {
-        
-        emailController.text = value!; 
+        emailController.text = value!;
       },
       textInputAction: TextInputAction.next, //엔터 치면 다음으로 넘어감
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail), 
+          prefixIcon: Icon(Icons.mail),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
@@ -103,13 +111,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-          child: Column(
-            children: [Stack(
-              children:<Widget>[
-              Container(
+        child: Column(children: [
+          Stack(children: <Widget>[
+            Container(
                 height: 200,
-                child: HeaderWidget(_headerHeight, true, Image.asset('assets/logo_img.png'))
-            )]),            
+                child: HeaderWidget(
+                    _headerHeight, true, Image.asset('assets/logo_img.png')))
+          ]),
           SafeArea(
             child: Container(
               color: Colors.white,
@@ -119,11 +127,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        children: [
-                          SizedBox(width: 10,),
-                          Text("Login", textAlign: TextAlign.left, 
-                          style: TextStyle(fontSize: 20,  fontWeight: FontWeight.bold),)]),
+                      Row(children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Login",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        )
+                      ]),
                       SizedBox(
                         height: 30,
                       ),
@@ -169,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-            ]),
+        ]),
       ),
     );
   }
@@ -183,8 +197,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Fluttertoast.showToast(msg: "Login Successful!"),
                 Fluttertoast.showToast(msg: "Login success!"),
 
-            
-                Navigator.of(context).pushReplacement( //뒤로가기 하고싶으면 push로 바꾸기(코드 계속 재실행시키기 귀찮으니까..?)
+                Navigator.of(context).pushReplacement(
+                    //뒤로가기 하고싶으면 push로 바꾸기(코드 계속 재실행시키기 귀찮으니까..?)
                     MaterialPageRoute(builder: (context) => HomeScreen())),
               })
           .catchError((e) {

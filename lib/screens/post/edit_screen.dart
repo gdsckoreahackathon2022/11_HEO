@@ -19,13 +19,6 @@ class EditScreen extends StatefulWidget {
 class _EditScreenState extends State<EditScreen> {
   FireStorageRepository _fireStorageRepository = FireStorageRepository();
 
-  final _contentsFocusNode = FocusNode();
-
-  final TextEditingController _newNameCon = TextEditingController();
-  final TextEditingController _newDescCon = TextEditingController();
-  final TextEditingController _newPriceCon = TextEditingController();
-  final postId = Get.arguments['docId'].toString();
-
   @override
   void initState() {
     super.initState();
@@ -33,10 +26,10 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   void didChangeDependencies() {
-  
+    // postId가 not null이라면 => 게시글 작성자라면
     if (postId != "null") {
-      print(postId);
-      _newNameCon.text = Get.arguments["name"].toString();
+      print("게시글 작성자 : $postId");
+      _newTitleCon.text = Get.arguments["title"].toString();
       _newDescCon.text = Get.arguments["description"].toString();
       _newPriceCon.text = Get.arguments["resPrice"].toString();
     }
@@ -50,18 +43,29 @@ class _EditScreenState extends State<EditScreen> {
     super.dispose();
   }
 
+  final _contentsFocusNode = FocusNode();
+  final TextEditingController _newTitleCon = TextEditingController();
+  final TextEditingController _newDescCon = TextEditingController();
+  final TextEditingController _newPriceCon = TextEditingController();
+  final postId = Get.arguments['docId'].toString();
+
   late ProgressDialog pr;
   UserModel userModel = UserModel();
-  List<Asset> images = <Asset>[];
-
-  List<String> loadImage = [];
+  List<Asset> images = <Asset>[]; // multi_image_picker2를 통해 여러 사진을 asset 타입으로 저장 
+  List<String> loadImage = []; // 이미지를 Url로 변환하여 String 타입으로 저장
+  String currentPosition = Get.arguments["currentPosition"]; // 주소
 
   @override
   Widget build(BuildContext context) {
-    pr = ProgressDialog(context: context);
+    pr = ProgressDialog(context: context); // sn_progress_dialog
+
+    print("주소 : ${currentPosition}");
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
+
+        // 게시글 작성자인지 판단
         title: postId != "null"
             ? Text(
                 '이웃거래 글 수정하기',
@@ -90,23 +94,27 @@ class _EditScreenState extends State<EditScreen> {
                 fontSize: 14,
               ),
             ),
-            // textColor: Colors.white,
             onPressed: () {
+              // 필수 입력 항목을 작성해야 한다는 msg를 보냄.
               String errorMsg = "";
-              if (_newNameCon.text == "") {
+
+              if (_newTitleCon.text == "") {
                 errorMsg = "제목은 필수 입력 항목입니다.";
-                showMsgDialog(errorMsg);
               } else if (_newPriceCon.text == "") {
                 errorMsg = "가격은 필수 입력 항목입니다.";
-                showMsgDialog(errorMsg);
               } else if (_newDescCon.text == "") {
                 errorMsg = "내용은 필수 입력 항목입니다.";
-                showMsgDialog(errorMsg);
               } else if (images.length == 0) {
                 errorMsg = "사진은 필수 입력 항목입니다.";
-                showMsgDialog(errorMsg);
-              } else {
+              }
+
+              // 필수 입력 항목을 모두 작성했다면 getImage() 실행
+              if (errorMsg == "") {
                 getImage();
+              
+              // 필수 입력 항목을 작성하지 않았다면 dialog 실행
+              } else {
+                showMsgDialog(errorMsg);
               }
             },
           ),
@@ -124,8 +132,10 @@ class _EditScreenState extends State<EditScreen> {
                   // width: MediaQuery.of(context).size.width,
                   child: buildGridView(),
                 ),
+
+                // 제목 
                 TextFormField(
-                  controller: _newNameCon,
+                  controller: _newTitleCon,
                   decoration: InputDecoration(
                     labelText: '제목',
                   ),
@@ -141,6 +151,8 @@ class _EditScreenState extends State<EditScreen> {
                   },
                   onSaved: (value) {},
                 ),
+
+                // 가격
                 TextFormField(
                   controller: _newPriceCon,
                   decoration: InputDecoration(
@@ -157,8 +169,9 @@ class _EditScreenState extends State<EditScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
                 ),
+
+                // 내용
                 TextFormField(
                   controller: _newDescCon,
                   decoration: InputDecoration(labelText: '내용'),
@@ -172,16 +185,6 @@ class _EditScreenState extends State<EditScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    // _editedPost = Post(
-                    //   title: _editedPost.title,
-                    //   contents: value,
-                    //   boardId: _editedPost.boardId,
-                    //   datetime: _editedPost.datetime,
-                    //   id: _editedPost.id,
-                    //   userId: _editedPost.userId,
-                    // );
-                  },
                 ),
               ],
             ),
@@ -190,7 +193,6 @@ class _EditScreenState extends State<EditScreen> {
       ),
     );
   }
-
 
   Widget buildGridView() {
     return SizedBox(
@@ -248,6 +250,7 @@ class _EditScreenState extends State<EditScreen> {
     return file;
   }
 
+  // 에러 메시지 사용자에게 알림
   void showMsgDialog(String msg) {
     showDialog(
       barrierDismissible: false,
@@ -273,63 +276,65 @@ class _EditScreenState extends State<EditScreen> {
     );
   }
 
+  // 이미지를 sotrage에 저장 후 Url를 가져옴
   getImage() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
+    // 반복문을 통해 모든 사진을 확인
     for (int i = 0; i < images.length; i++) {
-      loadImage.add("a");
+      loadImage.add("a"); 
       var rnd = Random().nextInt(500) + 1;
 
-      // asset를 File로 변환
+      // asset 타입을 File 타입으로 변환
       File image = await getImageFileFromAssets(images[i]);
 
       // storage 이미지 저장
       UploadTask task =
-          _fireStorageRepository.uploadImageFile('name', image, rnd);
+          _fireStorageRepository.uploadImageFile('title', image, rnd);
 
+      // storage에 저장된 이미지의 Url를 가져옴
       task.snapshotEvents.listen((evnt) async {
         print(evnt.bytesTransferred);
         if (evnt.bytesTransferred == evnt.totalBytes) {
-          print(1);
           String downlodUrl = await evnt.ref.getDownloadURL();
 
-          loadImage[i] = downlodUrl;
+          loadImage[i] = downlodUrl; // Url를 loadImage에 저장
         }
       });
     }
 
     await uploadImage();
 
-    Get.offAllNamed('/post');
+    Get.offAllNamed('/post', arguments: {"currentPosition": currentPosition});
   }
 
+  // 이미지를 저장하고 Url를 가져오는데 시간이 오래 걸려서 딜레이를 시킴
   uploadImage() async {
+    // sn_progress_dialog show
     pr.show(
       max: 100,
       msg: '업로드 중...',
       progressBgColor: Colors.transparent,
     );
+    // 최대 5개 사진을 저장할 때 8초정도 걸림. 
+    // 다른 방법을 고민중..
     await Future.delayed(Duration(seconds: 8), () {});
 
     await _saveForm();
   }
 
+  // 게시글 저장
   _saveForm() {
     String uid = CRUDController.to.authUid();
-    print("aasdasd${uid}");
-    print(postId);
+    print("게시글 작성자 : $postId");
 
+    // 게시글이 create인지 update인지 확인 후 실행
     if (postId == "null") {
-      CRUDController.to.createDoc(_newNameCon.text, _newDescCon.text, loadImage,
-          _newPriceCon.text, uid);
+      CRUDController.to.createDoc(_newTitleCon.text, _newDescCon.text,
+          loadImage, _newPriceCon.text, uid, currentPosition);
     } else {
-      CRUDController.to.updateDoc(
-        postId.toString(),
-        _newNameCon.text,
-        _newDescCon.text,
-        loadImage,
-        _newPriceCon.text,
-      );
+      CRUDController.to.updateDoc(postId.toString(), _newTitleCon.text,
+          _newDescCon.text, loadImage, _newPriceCon.text, currentPosition);
     }
   }
 }
