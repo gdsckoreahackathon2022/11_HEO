@@ -65,33 +65,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.black,
                   ))
             ]),
-            
         body: _isLoding
             ? SingleChildScrollView(
                 child: Center(
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          MaterialButton(
-                            color: Colors.green.shade300,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddListScreen()));
-                            },
-                            child: Text('addList'),
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0))),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
+                      SizedBox(height: 10,),
                       Container(
                         child: TableCalendar(
                           firstDay: DateTime.utc(2010, 10, 20),
@@ -123,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Divider(
                               color: Colors.grey.shade300, thickness: 1.0)),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -136,6 +115,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.green.shade600,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              width: 150,
+                            ),
+                            MaterialButton(
+                              color: Colors.green.shade300,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddListScreen()));
+                              },
+                              child: Text('addList'),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30.0))),
+                            ),
                           ]),
                       SizedBox(
                         width: 10,
