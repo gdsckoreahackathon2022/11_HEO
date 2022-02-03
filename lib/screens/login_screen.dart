@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:study/repository/location_repository.dart';
+import 'package:study/screens/bottom_tapbar.dart';
 import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/registration_screen.dart';
 import 'package:study/model/helper_widget.dart';
@@ -199,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 Navigator.of(context).pushReplacement(
                     //뒤로가기 하고싶으면 push로 바꾸기(코드 계속 재실행시키기 귀찮으니까..?)
-                    MaterialPageRoute(builder: (context) => HomeScreen())),
+                    MaterialPageRoute(builder: (context) => tap())),
               })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);

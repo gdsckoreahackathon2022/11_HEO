@@ -45,7 +45,7 @@ class PostScreenState extends State<PostScreen> {
 
       // 게시물 추가 버튼
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: Colors.white,),
           backgroundColor: Colors.green.shade300,
           onPressed: () {
             // EditScreen으로 넘어갈 때 postId와 currentPosition을 넘김
@@ -85,10 +85,14 @@ class PostScreenState extends State<PostScreen> {
       return Center(child: Text("게시글이 없습니다."));
     } else {
       // ListView로 게시글을 하나씩 확인
-      return ListView(
-        children: snapshot.map((DocumentSnapshot document) {
-          return _buildListItem(context, document);
-        }).toList(),
+      return Builder(
+        builder: (context) {
+          return ListView(
+            children: snapshot.map((DocumentSnapshot document) {
+              return _buildListItem(context, document);
+            }).toList(),
+          );
+        }
       );
     }
   }

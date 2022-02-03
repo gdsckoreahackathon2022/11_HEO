@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:study/repository/location_repository.dart';
 import 'package:study/screens/add_list/add_list_screen.dart';
 import 'package:study/screens/login_screen.dart';
-import 'package:study/screens/post/post_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,15 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // 주소
   late String currentPosition;
   bool _isLoding = false;
-  int _currentIndex = 0;
-  
-  final List<Widget> tabs = <Widget>[
-    HomeScreen(),
-    PostScreen(),
-    PostScreen(),
-  ];
-
-  
 
   @override
   void initState() {
@@ -75,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.black,
                   ))
             ]),
+            
         body: _isLoding
             ? SingleChildScrollView(
                 child: Center(
@@ -190,31 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             : Center(
                 child: CircularProgressIndicator(),
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                type: BottomNavigationBarType.fixed,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    title: Text('Home'),
-                    backgroundColor: Colors.green.shade300),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.star),
-                    title: Text('Community'),
-                    backgroundColor: Colors.green.shade300),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    title: Text('my'),
-                    backgroundColor: Colors.green.shade300),
-                ],
-                onTap: (index){
-                  setState(() {
-                    _currentIndex = index;
-                  });
-
-                },
-              ),);
+              ));
   }
 
   Future<void> logout(BuildContext context) async {
