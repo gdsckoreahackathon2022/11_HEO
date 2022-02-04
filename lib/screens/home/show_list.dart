@@ -69,10 +69,16 @@ class _ShowListState extends State<ShowList> {
                     color: expire != 0 ? Colors.black : Colors.red,
                     fontSize: 20,
                     fontWeight: FontWeight.bold))
-            : Text('D-$expire',
-                style: TextStyle(
-                    color: expire != 0 ? Colors.black : Colors.red,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold)));
+            : expire > 0
+                ? Text('D-$expire',
+                    style: TextStyle(
+                        color: expire != 0 ? Colors.black : Colors.red,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold))
+                : Text('D+${expire * -1}',
+                    style: TextStyle(
+                        color: expire != 0 ? Colors.blue : Colors.red,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)));
   }
 }
