@@ -206,7 +206,7 @@ class PostScreenState extends State<PostScreen> {
                                 )
                               : Container(),
                           // 가격
-                          Text("${resPrice}원",
+                          Text("${resPrice}won",
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,

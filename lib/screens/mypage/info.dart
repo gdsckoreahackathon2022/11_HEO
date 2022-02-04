@@ -16,59 +16,67 @@ class _infoState extends State<info> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("내 정보"),
+        backgroundColor: Colors.white,
+        elevation: 1.0,
+        title: Image.asset(
+              'assets/logo_img.png',
+              width: 90,
+            ),
+            centerTitle: true,
       ),
-      body: Container(
-        padding: EdgeInsets.all(50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.green,
-                child: Image.asset('assets/icon.png'),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 0,
               ),
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              Center(
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.green,
+                  child: Image.asset('assets/icon.png'),
+                ),
               ),
-              child: Text("NickName : " + "어쩌고", style: _style),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              const SizedBox(
+                height: 100,
               ),
-              child: Text("Email : " + "어쩌고", style: _style),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Text("NickName : " + "어쩌고", style: _style),
               ),
-              child: Text('Phone : ' + '어쩌고', style: _style),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  readData();
-                },
-                child: Text("정보 가져오기"))
-          ],
+              const SizedBox(
+                height: 60,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Text("Email : " + "어쩌고", style: _style),
+              ),
+              const SizedBox(
+                height: 60,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Text('Phone : ' + '어쩌고', style: _style),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    readData();
+                  },
+                  child: Text("정보 가져오기"))
+            ],
+          ),
         ),
       ),
     );
