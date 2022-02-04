@@ -6,7 +6,7 @@ import 'package:study/controller/crud_controller.dart';
 import 'package:study/model/comment_model.dart';
 
 class CommentScreen {
-  Widget buildBody(BuildContext context, String postid) {
+  Widget buildBody(BuildContext context, String postid, String nickName) {
     // StreamBuilder를 통해 댓글 내용을 계속해서 업데이트
     return StreamBuilder(
       stream: FirebaseFirestore.instance
@@ -24,14 +24,14 @@ class CommentScreen {
               color: Colors.green,
             ));
           default:
-            return _buildList(context, snapshot.data!.docs, postid);
+            return _buildList(context, snapshot.data!.docs, postid, nickName );
         }
       },
     );
   }
 
   Widget _buildList(
-      BuildContext context, List<DocumentSnapshot> snapshot, postid) {
+      BuildContext context, List<DocumentSnapshot> snapshot, String postid, String nickName) {
     // 댓글이 없으면
     if (snapshot.length == 0) {
       return Column(children: [
@@ -45,13 +45,13 @@ class CommentScreen {
     } else {
       return Column(
         children: snapshot.map((DocumentSnapshot document) {
-          return _buildListItem(context, document, postid);
+          return _buildListItem(context, document, postid, nickName);
         }).toList(),
       );
     }
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data, postid) {
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data, String postid, String nickName) {
     final currModel = CommentModel.fromDocumnet(data);
 
      // 날짜
@@ -80,7 +80,7 @@ class CommentScreen {
 
           // 이름
           title: Text(
-            currModel.name.toString(),
+            nickName,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),

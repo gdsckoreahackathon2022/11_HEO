@@ -10,12 +10,9 @@ import 'package:study/controller/bottom_navigation_page_controller.dart';
 import 'package:study/controller/crud_controller.dart';
 import 'package:study/controller/image_crop_controller.dart';
 import 'package:study/model/user_model.dart';
-import 'package:study/model/list_ingredient.dart';
 import 'package:study/repository/firestorage_repository.dart';
-import 'package:study/screens/home/home_screen.dart';
 
 class EditScreen extends StatefulWidget {
-
   @override
   _EditScreenState createState() => _EditScreenState();
 }
@@ -73,27 +70,37 @@ class _EditScreenState extends State<EditScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Image.asset(
-            'assets/logo_img.png',
-            width: 90,
-          ),
-          centerTitle: true,
-        elevation: 0.5,
+        backgroundColor: Colors.green,
+
+        // 게시글 작성자인지 판단
+        title: postId != "null"
+            ? Text(
+                '이웃거래 글 수정하기',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              )
+            : Text(
+                '이웃거래 글쓰기',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+        centerTitle: true,
+        elevation: 0.0,
         leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.close),
           onPressed: () {
             Get.back();
           },
         ),
         actions: <Widget>[
-          IconButton(
-          icon: Icon(
-            Icons.check_circle,
-            color: Colors.green.shade800,
-            size: 30,
-          ),
+          TextButton(
+            child: Text(
+              "완료",
+            ),
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+              textStyle: TextStyle(
+                fontSize: 14,
+              ),
+            ),
             onPressed: () {
               // 필수 입력 항목을 작성해야 한다는 msg를 보냄.
               String errorMsg = "";
@@ -257,9 +264,6 @@ class _EditScreenState extends State<EditScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
           content: Container(
             height: 100,
             child: Center(
@@ -267,11 +271,7 @@ class _EditScreenState extends State<EditScreen> {
             ),
           ),
           actions: <Widget>[
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30.0))),
-              color: Colors.green.shade500,
+            FlatButton(
               child: Text("ok"),
               onPressed: () {
                 Get.back();
