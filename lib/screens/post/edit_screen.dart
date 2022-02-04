@@ -314,7 +314,7 @@ class _EditScreenState extends State<EditScreen> {
 
     // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
     // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
-    _bottomNavigationPageController.changePage(2);
+    _bottomNavigationPageController.changePage(1);
     Get.offAllNamed('/tap');
   }
 

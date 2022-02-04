@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:study/repository/location_repository.dart';
 import 'package:study/screens/add_list/add_list_screen.dart';
 import 'package:study/screens/home/home_dialog.dart';
+import 'package:study/screens/home/show_list.dart';
 import 'package:study/screens/login_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -22,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isLoding = true;
+  final GlobalKey<AnimatedListState> key = GlobalKey();
+  List<ListIngredient> products = [];
 
   //디데이
   Widget difdate(int expire) {
@@ -161,57 +164,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         stream: FirebaseFirestore.instance
                             .collection('List')
                             .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                        builder: (context,snapshot) {
                           if (!snapshot.hasData) {
                             return CircularProgressIndicator();
                           }
-                          return ListView(
-                            shrinkWrap: true,
+                          final datas = snapshot.data!.docs;
+                          return AnimatedList(
                             physics: NeverScrollableScrollPhysics(),
-                            children: snapshot.data!.docs
-                                .map((DocumentSnapshot document) {
-                                  int dday = datediffernce(document.get('date'));
-                                  ListIngredient listIngredient = ListIngredient(name: document.get('name'), expire: document.get('date'), dday: dday);
-
-                              //리스트 항목 클릭시 다이얼로그
-                              return GestureDetector(
-                                onTap: (){
-                                  Dialog(listIngredient);
-                                },
-                                child: Container(
-                                  height: 75,
-                                  margin: EdgeInsets.fromLTRB(25, 3, 25, 10),
-                                  padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.lightGreen.shade100),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Text(listIngredient.name,
-                                              style: TextStyle(
-                                                color: Colors.blueGrey.shade800,
-                                                  fontSize: 20,)),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(listIngredient.expire,
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 15,
-                                              )),
-                                        ],
-                                      ),
-                                      difdate(listIngredient.dday)
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                            key: key,
+                            shrinkWrap: true,
+                            initialItemCount: datas.length,
+                            itemBuilder: (context,index,animation){
+                              var dday = datediffernce(datas[index].get('date'));
+                              var data = ListIngredient(name: datas[index].get('name'),expire: datas[index].get('date'),dday: dday);
+                              products.add(data);
+                              ListIngredient ingredient = ListIngredient(name: data.name, expire: data.expire,dday: data.dday);
+                              return ShowList(ingredient: ingredient, animation: animation, onClicked: ()=>removeItem(index));
+                            }
                           );
                         },
                       )
@@ -238,5 +207,19 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           return HomeDialog(ingredient: ingredient,);
         });
+  }
+
+  //리스트에서 아이템 제거
+  //제거 후 리스트가 비어있다면 텍스트 출력
+  removeItem(int index) {
+    final removedItem = products[index];
+    
+    products.removeAt(index);
+    key.currentState!.removeItem(
+        index,
+        (context, animation) => ShowList(
+            ingredient: removedItem, animation: animation, onClicked: () {}),
+        duration: Duration(milliseconds: 400));
+    print('removed');
   }
 }
