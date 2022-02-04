@@ -28,6 +28,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   String currentPosition = Get.arguments["currentPosition"].toString(); // 주소
   int price = int.parse(Get.arguments["resPrice"].toString()); // 가격
 
+  String title = Get.arguments["title"];
+  String description = Get.arguments["description"];
+  String docId = Get.arguments["docId"];
+  String salesState = Get.arguments["salesState"];
+
   @override
   void dispose() {
     _commentTextEditController.dispose();
@@ -58,60 +63,122 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 // EditScreen으로 입력 정보를 전달
                 // 이미지 전달 x: 저장된 이미지는 Url 정보(String 타입)이고 EditScreen에서 보여주는 이미지는 asset 타입이라 따로 이미지는 전달하지 못함.
                 // => 하려면 url 정보를 File 타입으로 변환 후 다시 asset 타입으로 변환해야할 듯?
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Get.offNamed('/edit', arguments: {
-                      'title': Get.arguments["title"],
-                      'description': Get.arguments["description"],
-                      'resPrice': price,
-                      "docId": Get.arguments["docId"],
-                      "currentPosition": currentPosition
-                    });
-                  },
-                ),
-                // 게시글 삭제 버튼
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: Text('삭제'),
-                        content: Text(
-                          '게시글을 삭제할까요?',
-                        ),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text(
-                              '취소',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                          FlatButton(
-                            child: Text(
-                              '확인',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onPressed: () {
-                              // 게시글 삭제
-                              CRUDController.to
-                                  .deleteDoc(postId, currentPosition);
 
-                              // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
-                              // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
-                              _bottomNavigationPageController.changePage(2);
-                              Get.offAllNamed('/tap');
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                // 메뉴 버튼
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            // height: MediaQuery.of(context).size.height * 0.95,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: new BorderRadius.only(
+                                topLeft: const Radius.circular(25.0), // 적절히 조절
+                                topRight: const Radius.circular(25.0), // 적절히 조절
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  title: Center(
+                                      child: new Text(
+                                    '더보기',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )),
+                                ),
+                                ListTile(
+                                    title: new Text(
+                                      '정보 수정',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle:
+                                        Text("상품의 이미지, 가격, 이름을 더 매력적으로 바꿔보세요!"),
+                                    onTap: () {
+                                      Get.offNamed('/edit', arguments: {
+                                        'title': title,
+                                        'description': description,
+                                        'resPrice': price,
+                                        "docId": docId,
+                                        "currentPosition": currentPosition,
+                                        "salesState": salesState
+                                      });
+                                    },
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.arrow_forward_ios_sharp),
+                                      onPressed: () {
+                                        Get.offNamed('/edit', arguments: {
+                                          'title': title,
+                                          'description': description,
+                                          'resPrice': price,
+                                          "docId": docId,
+                                          "currentPosition": currentPosition,
+                                          "salesState": salesState
+                                        });
+                                      },
+                                    )),
+                                ListTile(
+                                    title: new Text(
+                                      '상태 변경',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () {
+                                      Get.back();
+                                      stateShow();
+                                    },
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.arrow_forward_ios_sharp),
+                                      onPressed: () {
+                                        Get.back();
+                                        stateShow();
+                                      },
+                                    )),
+                                ListTile(
+                                    title: new Text(
+                                      '삭제',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () {
+                                      Get.back();
+                                      deleteShow();
+                                    },
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.arrow_forward_ios_sharp),
+                                      onPressed: () {
+                                        Get.back();
+                                        deleteShow();
+                                      },
+                                    )),
+                                ListTile(
+                                    title: new Text(
+                                      '취소',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.arrow_forward_ios_sharp),
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                    )),
+                                SizedBox(
+                                  height: 20.0,
+                                )
+                              ],
+                            ),
+                          );
+                        });
                   },
                 ),
               ]
@@ -157,40 +224,77 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   ),
 
                   // 이미지
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Swiper(
-                          control: SwiperControl(),
-                          pagination: SwiperPagination(),
-                          itemCount: Get.arguments['imageUrl'].length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Image.network(
-                              Get.arguments['imageUrl'][index].toString(),
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
-                      )),
+                  Opacity(
+                    opacity: salesState == "거래완료" ? 0.5 : 1,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          // 이미지 개수에 따라서 Swiper를 사용
+                          child: Get.arguments["imageUrl"].length == 1
+                              ? Image.network(
+                                  Get.arguments['imageUrl'][0].toString(),
+                                  fit: BoxFit.cover,
+                                )
+                              : Swiper(
+                                  control: SwiperControl(),
+                                  pagination: SwiperPagination(),
+                                  itemCount: Get.arguments['imageUrl'].length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    print(Get.arguments["imageUrl"].length);
+                                    return Image.network(
+                                      Get.arguments['imageUrl'][index]
+                                          .toString(),
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                        )),
+                  ),
 
-                  // 가격
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    width: double.infinity,
-                    child: Text(
-                      "${resPrice.toString()}원",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                      textScaleFactor: 1.4,
-                      textAlign: TextAlign.start,
-                    ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      salesState == "거래완료"
+                          ? Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[800],
+                                borderRadius: new BorderRadius.all(
+                                  const Radius.circular(8.0), // 적절히 조절
+                                ),
+                              ),
+                              // color: Colors.grey,
+                              child: Padding(
+                                padding: EdgeInsets.all(8),
+                                child: Text(
+                                  "거래완료",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ))
+                          : Container(),
+                      // 가격
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          "${resPrice.toString()}원",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                          textScaleFactor: 1.4,
+                        ),
+                      ),
+                    ],
                   ),
 
                   // 제목
                   Container(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(12.0),
                     width: double.infinity,
                     child: Text(
                       Get.arguments['title'].toString(),
@@ -206,7 +310,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                   // 내용
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -301,6 +405,105 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         ),
       ]),
     );
+  }
+
+  deleteShow() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('게시글 삭제'),
+        content: Text(
+          '정말 게시글를 삭제할까요?',
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              '취소',
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          FlatButton(
+            child: Text(
+              '확인',
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onPressed: () {
+              // 게시글 삭제
+              CRUDController.to.deleteDoc(postId);
+
+              // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
+              // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
+              _bottomNavigationPageController.changePage(2);
+              Get.offAllNamed('/tap');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  stateShow() {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return Container(
+            // height: MediaQuery.of(context).size.height * 0.95,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(25.0), // 적절히 조절
+                topRight: const Radius.circular(25.0), // 적절히 조절
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Center(
+                      child: new Text(
+                    '상태 변경',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                ),
+                ListTile(
+                  title: Center(
+                    child: new Text(
+                      '판매중',
+                    ),
+                  ),
+                  onTap: () {
+                    salesState = "판매중";
+                    CRUDController.to
+                        .stateUpdateDoc(postId, salesState);
+                    _bottomNavigationPageController.changePage(2);
+                    Get.offAllNamed('/tap');
+                  },
+                ),
+                ListTile(
+                  title: Center(
+                    child: new Text(
+                      '거래완료',
+                    ),
+                  ),
+                  onTap: () {
+                    salesState = "거래완료";
+                    CRUDController.to
+                        .stateUpdateDoc(postId, salesState);
+                    _bottomNavigationPageController.changePage(2);
+                    Get.offAllNamed('/tap');
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                )
+              ],
+            ),
+          );
+        });
   }
 
   // build 업데이트

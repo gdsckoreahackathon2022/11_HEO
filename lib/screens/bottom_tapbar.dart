@@ -29,7 +29,7 @@ class _tapState extends State<tap> {
           height: 70,
           child: BottomNavigationBar(
               backgroundColor: Colors.green.shade300,
-              selectedFontSize: 10.0,
+              selectedFontSize: 13.0,
               selectedItemColor: Colors.green.shade900,
               unselectedFontSize: 10.0,
               unselectedItemColor: Colors.grey.shade200,
@@ -47,17 +47,17 @@ class _tapState extends State<tap> {
                 ),
                 new BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.book,
+                    Icons.sell,
                     size: 30,
                   ),
-                  label: ("diary"),
+                  label: ("Community"),
                 ),
                 new BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.medical_services_rounded,
+                    Icons.person,
                     size: 30,
                   ),
-                  label: ("medicine"),
+                  label: ("my"),
                 ),
               ]),
         )));

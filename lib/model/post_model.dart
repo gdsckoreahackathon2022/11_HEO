@@ -10,6 +10,7 @@ class PostModel {
   final List? imageUrl;
   final String? price;
   final String? position;
+  final String? salesState;
 
   // 생성자
   PostModel(
@@ -20,7 +21,8 @@ class PostModel {
       this.gps,
       this.imageUrl,
       this.price,
-      this.position});
+      this.position,
+      this.salesState});
 
   // firebase docs를 매개변수로 받아서 새로운 Model 객체를 반환하는 메서드
   factory PostModel.fromDocumnet(DocumentSnapshot doc) {
@@ -33,7 +35,8 @@ class PostModel {
       gps: getDocs["gps"],
       imageUrl: getDocs["imageUrl"],
       price: getDocs['price'],
-      position:getDocs["position"]
+      position:getDocs["position"],
+      salesState:getDocs["salesState"]
     );
   }
 }

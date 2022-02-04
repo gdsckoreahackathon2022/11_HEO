@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 class LocationController extends GetxController {
-
   String addr = "";
 
   // 상태 관리
@@ -10,5 +9,4 @@ class LocationController extends GetxController {
     addr = position;
     update();
   }
-
 }

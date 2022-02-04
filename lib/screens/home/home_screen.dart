@@ -50,6 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //차이계산
     Duration duration = dateTime2.difference(dateTime1);
     var day = duration.inDays+1;
+    
+    print(dateTime1);
 
     return day;
   }
@@ -227,12 +229,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => LoginScreen()));
   }
-
-  Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-  }
-
 
   //홈 다이얼로그 창
   void Dialog(ListIngredient ingredient) {

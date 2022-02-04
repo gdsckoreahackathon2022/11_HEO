@@ -25,6 +25,8 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
+    if(Get.arguments["name"] != null)
+      _newTitleCon.text = Get.arguments["name"];
   }
 
   @override
@@ -50,14 +52,15 @@ class _EditScreenState extends State<EditScreen> {
   final TextEditingController _newTitleCon = TextEditingController();
   final TextEditingController _newDescCon = TextEditingController();
   final TextEditingController _newPriceCon = TextEditingController();
-  final postId = Get.arguments['docId'].toString();
 
   late ProgressDialog pr;
   UserModel userModel = UserModel();
   List<Asset> images =
       <Asset>[]; // multi_image_picker2를 통해 여러 사진을 asset 타입으로 저장
   List<String> loadImage = []; // 이미지를 Url로 변환하여 String 타입으로 저장
-  String currentPosition = Get.arguments["currentPosition"]; // 주소
+  final String currentPosition = Get.arguments["currentPosition"]; // 주소
+  final String postId = Get.arguments['docId'].toString();
+  final String salesState = Get.arguments['docId'].toString();
 
   @override
   Widget build(BuildContext context) {
@@ -338,10 +341,10 @@ class _EditScreenState extends State<EditScreen> {
     // 게시글이 create인지 update인지 확인 후 실행
     if (postId == "null") {
       CRUDController.to.createDoc(_newTitleCon.text, _newDescCon.text,
-          loadImage, _newPriceCon.text, uid, currentPosition);
+          loadImage, _newPriceCon.text, uid, currentPosition, salesState);
     } else {
       CRUDController.to.updateDoc(postId.toString(), _newTitleCon.text,
-          _newDescCon.text, loadImage, _newPriceCon.text, currentPosition);
+          _newDescCon.text, loadImage, _newPriceCon.text);
     }
   }
 }

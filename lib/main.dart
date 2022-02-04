@@ -1,13 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:study/screens/bottom_tapbar.dart';
+import 'package:study/screens/crawling/recipes.dart';
 
+import 'package:study/screens/crawling/recommend.dart';
 import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/login_screen.dart';
 import 'package:get/get.dart';
+import 'package:study/screens/mypage/info.dart';
 import 'package:study/screens/post/edit_screen.dart';
 import 'package:study/screens/post/post_screen.dart';
 import 'package:study/screens/post/post_detail_screen.dart';
+import 'package:study/screens/test.dart';
 
 import 'controller/crud_controller.dart';
 import 'controller/image_crop_controller.dart';
@@ -33,10 +37,9 @@ class MyApp extends StatelessWidget {
       home: LoginScreen(),
       getPages: [
         GetPage(
-            name: '/tap',
-            page: () => tap(),
-            ),
-        
+          name: '/tap',
+          page: () => tap(),
+        ),
         GetPage(
             name: '/post',
             page: () => PostScreen(),
@@ -56,6 +59,20 @@ class MyApp extends StatelessWidget {
             binding: BindingsBuilder(() {
               Get.lazyPut<CRUDController>(() => CRUDController());
             })),
+        GetPage(name: '/toCrawl', page: ()=>Home()),
+        GetPage(name: '/recipes', page: () => recipes()),
+        GetPage(
+            name: '/test',
+            page: () => TestScreen(),
+            binding: BindingsBuilder(() {
+              Get.lazyPut<CRUDController>(() => CRUDController());
+            })),
+            GetPage(
+            name: '/info',
+            page: () => info(),
+            binding: BindingsBuilder(() {
+              Get.lazyPut<CRUDController>(() => CRUDController());
+            }))
       ],
     );
   }
