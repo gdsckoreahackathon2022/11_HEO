@@ -153,7 +153,23 @@ class _recipesState extends State<recipes> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('레시피'),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+            title: Image.asset(
+              'assets/logo_img.png',
+              width: 90,
+            ),
+            centerTitle: true,
+            // 뒤로가기 버튼 생성!
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: isLoading
           ? const Center(
