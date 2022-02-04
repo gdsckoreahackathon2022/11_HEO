@@ -8,6 +8,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:study/controller/users_controller.dart';
 import 'package:study/screens/test.dart';
+import 'package:study/screens/test.dart';
 
 class info extends StatefulWidget {
   const info({Key? key}) : super(key: key);
