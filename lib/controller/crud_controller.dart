@@ -19,6 +19,7 @@ class CRUDController extends GetxController {
   final String fnPosition = "position";
   final String fnName = "name";
   final String fnComment = "comment";
+  final String fnSalesState = "salesState";
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -35,24 +36,33 @@ class CRUDController extends GetxController {
   /// Firestore CRUD Logic
 
   // 문서 생성 (Create)
-  void createDoc(
-      String title, String description, List image, String price, String uid, String currentPosition) {
-    FirebaseFirestore.instance.collection(colName).doc(currentPosition).collection("post").add({
+  void createDoc(String title, String description, List image, String price,
+      String uid, String currentPosition, String salesState) {
+    FirebaseFirestore.instance
+        .collection(colName)
+        .doc(currentPosition)
+        .collection("post")
+        .add({
       fnTitle: title,
       fnDescription: description,
       fnDatetime: Timestamp.now(),
       fnImage: image,
       fnPrice: price,
       fnUid: uid,
-      fnPosition: currentPosition
-      
+      fnPosition: currentPosition,
+      fnSalesState: salesState
     });
   }
 
   // 문서 갱신 (Update)
-  void updateDoc(
-      String docID, String title, String description, List image, String price, String currentPosition) {
-    FirebaseFirestore.instance.collection(colName).doc(currentPosition).collection("post").doc(docID).update({
+  void updateDoc(String docID, String title, String description, List image,
+      String price, String currentPosition) {
+    FirebaseFirestore.instance
+        .collection(colName)
+        .doc(currentPosition)
+        .collection("post")
+        .doc(docID)
+        .update({
       fnTitle: title,
       fnDescription: description,
       fnImage: image,
@@ -62,16 +72,33 @@ class CRUDController extends GetxController {
 
   // 문서 삭제 (Delete)
   void deleteDoc(String docID, String currentPosition) {
-    FirebaseFirestore.instance.collection(colName).doc(currentPosition).collection("post").doc(docID).delete();
+    FirebaseFirestore.instance
+        .collection(colName)
+        .doc(currentPosition)
+        .collection("post")
+        .doc(docID)
+        .delete();
   }
 
+  // 문서 갱신 (Update)
+  void stateUpdateDoc(String docID, String currentPosition, String salesState) {
+    FirebaseFirestore.instance
+        .collection(colName)
+        .doc(currentPosition)
+        .collection("post")
+        .doc(docID)
+        .update({fnSalesState: salesState});
+  }
 
   /// ************************************** commentScreen *********************************************************/
-  
+
   // 문서 생성
-  void createComment(
-      String comment, String uid, String name, String postId) {
-    FirebaseFirestore.instance.collection("comments").doc(postId).collection("comment").add({
+  void createComment(String comment, String uid, String name, String postId) {
+    FirebaseFirestore.instance
+        .collection("comments")
+        .doc(postId)
+        .collection("comment")
+        .add({
       "comment": comment,
       fnDatetime: Timestamp.now(),
       fnUid: uid,
@@ -81,6 +108,11 @@ class CRUDController extends GetxController {
 
   // 문서 삭제
   void deleteComment(String postId, String docID) {
-    FirebaseFirestore.instance.collection("comments").doc(postId).collection("comment").doc(docID).delete();
+    FirebaseFirestore.instance
+        .collection("comments")
+        .doc(postId)
+        .collection("comment")
+        .doc(docID)
+        .delete();
   }
 }
