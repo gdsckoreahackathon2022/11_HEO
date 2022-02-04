@@ -46,7 +46,8 @@ class PostScreenState extends State<PostScreen> {
               // currentPosition : 어느 위치 게시글에 저장해야하는지 확인하기 위해
               Get.toNamed("/edit", arguments: {
                 "postId": "",
-                "currentPosition": currentPosition
+                "currentPosition": currentPosition,
+                "salesState": "판매중"
               });
             }),
       );
@@ -106,80 +107,118 @@ class PostScreenState extends State<PostScreen> {
     DateTime currTime = currModel.datetime!.toDate();
     String dt = DateFormat('MM/dd kk:mm').format(currTime);
 
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        // 게시글을 눌렀을 때 PostDetailScreen으로 이동
-        onTap: () {
-          Get.toNamed('/postDetailScreen', arguments: {
-            'title': currModel.title,
-            'description': currModel.description,
-            'imageUrl': currModel.imageUrl,
-            'resPrice': price,
-            'dt': dt.toString(),
-            "uid": currModel.uid,
-            "docId": data.id.toString(),
-            "currentPosition": currentPosition
-          });
-        },
+    // 거래 상태
+    String salesState = currModel.salesState.toString();
+    // 거래 상태에 따라 투명도 조절
+    return Opacity(
+      opacity: salesState == "거래완료" ? 0.3 : 1,
+      child: Card(
+        elevation: 2,
+        child: InkWell(
+          // 게시글을 눌렀을 때 PostDetailScreen으로 이동
+          onTap: () {
+            Get.toNamed('/postDetailScreen', arguments: {
+              'title': currModel.title,
+              'description': currModel.description,
+              'imageUrl': currModel.imageUrl,
+              'resPrice': price,
+              'dt': dt.toString(),
+              "uid": currModel.uid,
+              "docId": data.id.toString(),
+              "currentPosition": currentPosition,
+              "salesState": salesState
+            });
+          },
 
-        onLongPress: () {},
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // 게시글의 대표 이미지
-              Container(
-                child: Image.network(
-                  currModel.imageUrl![0].toString(),
-                  fit: BoxFit.cover,
+          onLongPress: () {},
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // 게시글의 대표 이미지
+                Container(
+                  child: Image.network(
+                    currModel.imageUrl![0].toString(),
+                    fit: BoxFit.cover,
+                  ),
+                  height: 120.0,
+                  width: 120.0,
                 ),
-                height: 120.0,
-                width: 120.0,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // 제목
-                    Container(
-                      child: Text(currModel.title.toString(),
-                          style: TextStyle(
-                            color: Colors.blueGrey,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          // overflow: TextOverflow.ellipsis,
-                          softWrap: true),
-                    ),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // 제목
+                      Container(
+                        child: Text(currModel.title.toString(),
+                            style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            // overflow: TextOverflow.ellipsis,
+                            softWrap: true),
+                      ),
 
-                    SizedBox(
-                      height: 5.0,
-                    ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
 
-                    // 날짜
-                    Text(
-                      dt.toString(),
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
+                      // 날짜
+                      Text(
+                        dt.toString(),
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
 
-                    SizedBox(
-                      height: 5.0,
-                    ),
-
-                    // 가격
-                    Text("${resPrice}원",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        softWrap: true),
-                  ],
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      // 거래 상태
+                      Row(
+                        children: [
+                          salesState == "거래완료"
+                              ? Row(
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[800],
+                                          borderRadius: new BorderRadius.all(
+                                            const Radius.circular(
+                                                8.0), // 적절히 조절
+                                          ),
+                                        ),
+                                        // color: Colors.grey,
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            "거래완료",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )),
+                                    SizedBox(
+                                      width: 10,
+                                    )
+                                  ],
+                                )
+                              : Container(),
+                          // 가격
+                          Text("${resPrice}원",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              softWrap: true)
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
