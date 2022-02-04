@@ -222,12 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //제거 후 리스트가 비어있다면 텍스트 출력
   removeItem(int index) {
     final removedItem = products[index];
-
-    var a = FirebaseFirestore.instance.collection('Lists')
-    .doc(auth.currentUser!.uid)
-    .collection('ingredients')
-    .where("name", isEqualTo: products[index].name)
-    .where("date", isEqualTo: products[index].expire).snapshots();
+    var e =getInfo(index);
 
     products.removeAt(index);
     key.currentState!.removeItem(
@@ -236,5 +231,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ingredient: removedItem, animation: animation, onClicked: () {}),
         duration: Duration(milliseconds: 400));
     print('removed');
+  }
+
+  getInfo(int index) async{
+    var a = FirebaseFirestore.instance.collection('Lists')
+    .doc(auth.currentUser!.uid)
+    .collection('ingredient')
+    .where("name", isEqualTo: products[index].name)
+    .where("date", isEqualTo: products[index].expire);
+
+    var b = await a.get();
+    var c = b.docs[0].reference;
+    print('>>>>>$c');
+
+    
   }
 }
