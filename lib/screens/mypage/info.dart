@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:study/controller/users_controller.dart';
 import 'package:study/screens/test.dart';
 
 class info extends StatefulWidget {
@@ -17,6 +19,11 @@ class info extends StatefulWidget {
 class _infoState extends State<info> {
   @override
   Widget build(BuildContext context) {
+    return GetBuilder<UsersController>(builder: (controller) {
+      String myNickName = controller.nickName;
+      String myPhonNumber = controller.phonNumber;
+      String myEmail = authEmail();
+      
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -117,7 +124,7 @@ class _infoState extends State<info> {
                 //닉네임
                 Container(
                   width: 600,
-                  height: 100,
+                  height: 70,
                   margin: EdgeInsets.fromLTRB(20, 3, 20, 10),
                   padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                   decoration: BoxDecoration(
@@ -127,23 +134,18 @@ class _infoState extends State<info> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Nickname'),
-                      TextFormField(
-                        onFieldSubmitted: (_) {},
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Nickname';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {},
-                      ),
+                      Text( myNickName, 
+                      style: TextStyle(
+                        color: Colors.green.shade900,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
                 //이메일
                 Container(
                   width: 600,
-                  height: 100,
+                  height: 70,
                   margin: EdgeInsets.fromLTRB(20, 3, 20, 10),
                   padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                   decoration: BoxDecoration(
@@ -153,23 +155,18 @@ class _infoState extends State<info> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Email'),
-                      TextFormField(
-                        onFieldSubmitted: (_) {},
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Email';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {},
-                      ),
+                      Text(myEmail, 
+                      style: TextStyle(
+                        color: Colors.green.shade900,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
                 //전화번호
                 Container(
                   width: 600,
-                  height: 100,
+                  height: 70,
                   margin: EdgeInsets.fromLTRB(20, 3, 20, 10),
                   padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                   decoration: BoxDecoration(
@@ -179,16 +176,11 @@ class _infoState extends State<info> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Phone'),
-                      TextFormField(
-                        onFieldSubmitted: (_) {},
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Phone';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {},
-                      ),
+                      Text( myPhonNumber, 
+                      style: TextStyle(
+                        color: Colors.green.shade900,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold))
                     ],
                   ),
                 ),
@@ -197,14 +189,8 @@ class _infoState extends State<info> {
           ),
         ),
       ),
-    );
+    );});
   }
-
-  final TextStyle _style = const TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.w500,
-      fontSize: 20,
-      letterSpacing: 2.0);
 }
 
 String email = '';
@@ -230,7 +216,5 @@ void readData() {
       FirebaseFirestore.instance.collection("users").doc(auth.currentUser!.uid);
   userCollectionReference.get().then((value) {
     print(value.data());
-    // print(value.data()!.values);
-    // print(auth.currentUser.toString());
   });
 }
