@@ -16,7 +16,7 @@ class CRUDController extends GetxController {
   final String fnImage = "imageUrl";
   final String fnPrice = "price";
   final String fnUid = "uid";
-  final String fnPosition = "position";
+  final String fnPosition = "currentPosition";
   final String fnName = "name";
   final String fnComment = "comment";
   final String fnSalesState = "salesState";
@@ -33,6 +33,7 @@ class CRUDController extends GetxController {
     return auth.currentUser!.email.toString();
   }
 
+
   /// Firestore CRUD Logic
 
   // 문서 생성 (Create)
@@ -40,8 +41,6 @@ class CRUDController extends GetxController {
       String uid, String currentPosition, String salesState) {
     FirebaseFirestore.instance
         .collection(colName)
-        .doc(currentPosition)
-        .collection("post")
         .add({
       fnTitle: title,
       fnDescription: description,
@@ -56,11 +55,9 @@ class CRUDController extends GetxController {
 
   // 문서 갱신 (Update)
   void updateDoc(String docID, String title, String description, List image,
-      String price, String currentPosition) {
+      String price) {
     FirebaseFirestore.instance
         .collection(colName)
-        .doc(currentPosition)
-        .collection("post")
         .doc(docID)
         .update({
       fnTitle: title,
@@ -71,21 +68,17 @@ class CRUDController extends GetxController {
   }
 
   // 문서 삭제 (Delete)
-  void deleteDoc(String docID, String currentPosition) {
+  void deleteDoc(String docID) {
     FirebaseFirestore.instance
         .collection(colName)
-        .doc(currentPosition)
-        .collection("post")
         .doc(docID)
         .delete();
   }
 
-  // 문서 갱신 (Update)
-  void stateUpdateDoc(String docID, String currentPosition, String salesState) {
+  // 상태 업데이트
+  void stateUpdateDoc(String docID, String salesState) {
     FirebaseFirestore.instance
         .collection(colName)
-        .doc(currentPosition)
-        .collection("post")
         .doc(docID)
         .update({fnSalesState: salesState});
   }
