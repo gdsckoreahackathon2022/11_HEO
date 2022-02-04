@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:study/screens/post/edit_screen.dart';
 import 'package:study/screens/post/post_screen.dart';
 import 'package:study/screens/post/post_detail_screen.dart';
+import 'package:study/screens/test.dart';
 
 import 'controller/crud_controller.dart';
 import 'controller/image_crop_controller.dart';
@@ -33,10 +34,9 @@ class MyApp extends StatelessWidget {
       home: LoginScreen(),
       getPages: [
         GetPage(
-            name: '/tap',
-            page: () => tap(),
-            ),
-        
+          name: '/tap',
+          page: () => tap(),
+        ),
         GetPage(
             name: '/post',
             page: () => PostScreen(),
@@ -56,6 +56,12 @@ class MyApp extends StatelessWidget {
             binding: BindingsBuilder(() {
               Get.lazyPut<CRUDController>(() => CRUDController());
             })),
+        GetPage(
+            name: '/test',
+            page: () => TestScreen(),
+            binding: BindingsBuilder(() {
+              Get.lazyPut<CRUDController>(() => CRUDController());
+            }))
       ],
     );
   }

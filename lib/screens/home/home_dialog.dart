@@ -79,7 +79,9 @@ class _HomeDialogState extends State<HomeDialog> {
                       //레시피 추천 버튼
                       MaterialButton(
                         color: Colors.green.shade300,
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed("/test");
+                        },
                         child: Text('Recipe recommendation'),
                         shape: RoundedRectangleBorder(
                             borderRadius:

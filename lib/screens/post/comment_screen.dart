@@ -13,7 +13,7 @@ class CommentScreen {
           .collection('comments')
           .doc(postid)
           .collection("comment")
-          .orderBy('datetime', descending: true)
+          .orderBy('datetime', descending: false)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) return Text("Error: ${snapshot.error}");

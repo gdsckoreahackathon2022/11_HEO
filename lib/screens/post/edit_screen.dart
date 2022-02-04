@@ -342,7 +342,7 @@ class _EditScreenState extends State<EditScreen> {
           loadImage, _newPriceCon.text, uid, currentPosition, salesState);
     } else {
       CRUDController.to.updateDoc(postId.toString(), _newTitleCon.text,
-          _newDescCon.text, loadImage, _newPriceCon.text, currentPosition);
+          _newDescCon.text, loadImage, _newPriceCon.text);
     }
   }
 }
