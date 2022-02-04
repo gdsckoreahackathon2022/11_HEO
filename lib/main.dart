@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:study/screens/bottom_tapbar.dart';
 
 import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/login_screen.dart';
@@ -31,6 +32,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
       getPages: [
+        GetPage(
+            name: '/tap',
+            page: () => tap(),
+            ),
+        
         GetPage(
             name: '/post',
             page: () => PostScreen(),

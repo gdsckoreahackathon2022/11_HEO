@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:matcher/matcher.dart';
-import 'package:study/screens/add_list/add_list_screen.dart';
-import 'package:study/screens/home/home_screen.dart';
-import 'package:study/screens/post/post_screen.dart';
+import 'package:study/controller/bottom_navigation_page_controller.dart';
+import 'package:study/repository/location_repository.dart';
 
 class tap extends StatefulWidget {
   @override
@@ -12,60 +9,61 @@ class tap extends StatefulWidget {
 }
 
 class _tapState extends State<tap> {
-  int _currentindex = 0;
-  final List<Widget> _screen = [
-    HomeScreen(),
-    AddListScreen(),
-    PostScreen(),
-  ];
+  LocationRepository _locationRepository = LocationRepository();
+  BottomNavigationPageController _bottomNavigationPageController =
+      Get.put(BottomNavigationPageController());
+  late String currentPosition;
 
-  void _onTap(int index) {
-    setState(() {
-      _currentindex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _locationRepository.determinePosition();
+    locationCheck().then((value) async => {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screen[_currentindex],
-      bottomNavigationBar: SizedBox(
-        height: 70,
-        child: BottomNavigationBar(
-                backgroundColor: Colors.green.shade300,
-            selectedFontSize: 10.0,
-            selectedItemColor: Colors.green.shade900,
-            unselectedFontSize: 10.0,
-            unselectedItemColor: Colors.grey.shade200,
-            type: BottomNavigationBarType.fixed,
-            elevation: 5.0,
-            onTap: _onTap,
-            currentIndex: _currentindex,
-            items: [
-              new BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  size: 30,
+    return Obx(() => Scaffold(
+        body: _bottomNavigationPageController.currentPage,
+        bottomNavigationBar: SizedBox(
+          height: 70,
+          child: BottomNavigationBar(
+              backgroundColor: Colors.green.shade300,
+              selectedFontSize: 10.0,
+              selectedItemColor: Colors.green.shade900,
+              unselectedFontSize: 10.0,
+              unselectedItemColor: Colors.grey.shade200,
+              type: BottomNavigationBarType.fixed,
+              elevation: 5.0,
+              currentIndex: _bottomNavigationPageController.currentIndex.value,
+              onTap: _bottomNavigationPageController.changePage,
+              items: [
+                new BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                    size: 30,
+                  ),
+                  label: ("Home"),
                 ),
-                label: ("Home"),
-              ),
-              new BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.book,
-                  size: 30,
+                new BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.book,
+                    size: 30,
+                  ),
+                  label: ("diary"),
                 ),
-                label: ("diary"),
-              ),
-              new BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.medical_services_rounded,
-                  size: 30,
+                new BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.medical_services_rounded,
+                    size: 30,
+                  ),
+                  label: ("medicine"),
                 ),
-                label: ("medicine"),
-              ),
-              
-            ]),
-      ),
-    );
+              ]),
+        )));
+  }
+
+  Future locationCheck() async {
+    currentPosition = await _locationRepository.getCurrentLocation();
   }
 }
