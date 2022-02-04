@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:study/screens/bottom_tapbar.dart';
+import 'package:study/screens/crawling/recipes.dart';
 
+import 'package:study/screens/crawling/recommend.dart';
 import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/login_screen.dart';
 import 'package:get/get.dart';
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
             binding: BindingsBuilder(() {
               Get.lazyPut<CRUDController>(() => CRUDController());
             })),
+        GetPage(name: '/toCrawl', page: ()=>Home()),
+        GetPage(name: '/recipes', page: () => recipes())
       ],
     );
   }

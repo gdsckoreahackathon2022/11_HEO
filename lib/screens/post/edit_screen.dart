@@ -25,6 +25,8 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
+    if(Get.arguments["name"] != null)
+      _newTitleCon.text = Get.arguments["name"];
   }
 
   @override

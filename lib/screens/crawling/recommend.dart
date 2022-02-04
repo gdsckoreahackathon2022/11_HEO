@@ -4,22 +4,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:get/get.dart';
 import 'package:study/screens/crawling/recipes.dart';
 
-void main() => runApp(MyApp());
-
-//잠깐 딜레이?가 생길 떄 오류 화면이 한 번 보이는 문제 발생 -> 로딩중인 애니메이션?을 사용할 것! -> 해결
-
-class MyApp extends StatelessWidget {
-  // const MyApp({ Key? key }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Material App',
-      home: Home(),
-      getPages: [GetPage(name: '/recipes', page: () => recipes())],
-    );
-  }
-}
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -29,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var name = '오이';
+  var name = Get.arguments["product"];
   List<picture> recipe = [];
 
   bool isLoading = false;
