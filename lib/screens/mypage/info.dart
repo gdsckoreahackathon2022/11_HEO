@@ -87,10 +87,7 @@ class _infoState extends State<info> {
                     height: 40,
                     color: Colors.green.shade600,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TestScreen()));
+                      Get.toNamed("/test");
                     },
                     child: Text('나의 판매 내역 보기',
                         style: TextStyle(

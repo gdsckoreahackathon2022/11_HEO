@@ -52,7 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
         DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.parse(expire)));
     //차이계산
     Duration duration = dateTime2.difference(dateTime1);
+<<<<<<< HEAD
     var day = duration.inDays + 1;
+=======
+    var day = duration.inDays;
+    
+    print(dateTime1);
+
+>>>>>>> a7b045fe9430a622fa8303f45874f8b3e88faa1a
     return day;
   }
 
