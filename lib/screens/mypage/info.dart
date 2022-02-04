@@ -21,9 +21,9 @@ class _infoState extends State<info> {
       String myPhonNumber = controller.phonNumber;
       String myEmail = authEmail();
 
-      print(myNickName);
-      print(myPhonNumber);
-      print(myEmail);
+      // print(myNickName);
+      // print(myPhonNumber);
+      // print(myEmail);
 
       return Scaffold(
         appBar: AppBar(
@@ -74,11 +74,6 @@ class _infoState extends State<info> {
                 ),
                 child: Text('Phone : ' + myPhonNumber, style: _style),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    readData();
-                  },
-                  child: Text("정보 가져오기"))
             ],
           ),
         ),
