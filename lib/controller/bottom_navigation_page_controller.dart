@@ -7,7 +7,7 @@ import 'package:study/screens/post/post_screen.dart';
 class BottomNavigationPageController extends GetxController {
   final currentIndex = 0.obs;
 
-  List<dynamic> _screen = [HomeScreen(), AddListScreen(), PostScreen()];
+  List<dynamic> _screen = [HomeScreen(), PostScreen(), PostScreen()];
   
   Widget get currentPage => _screen[currentIndex.value]; // currentIndex.value에 따라서 page 전환
   

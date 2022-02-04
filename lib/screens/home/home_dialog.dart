@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:study/model/list_ingredient.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:study/controller/location_controller.dart';
+import 'package:study/model/post_model.dart';
+import 'package:study/screens/post/edit_screen.dart';
 
 class HomeDialog extends StatefulWidget {
-  ListIngredient ingredient;
+  ListIngredient ingredient; //식자재 리스트 객체
+
   HomeDialog({required this.ingredient, Key? key}):super(key: key);
   @override
   State<HomeDialog> createState() => _HomeDialogState();
 }
 
 class _HomeDialogState extends State<HomeDialog> {
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -41,7 +50,7 @@ class _HomeDialogState extends State<HomeDialog> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     //식재료 이름
-                    Text(widget.ingredient.name),
+                    Text(widget.ingredient.name, ),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -54,7 +63,11 @@ class _HomeDialogState extends State<HomeDialog> {
                         child: MaterialButton(
                           color: Colors.green.shade300,
                           onPressed: () {
-                            //글쓰기 페이지에 객체 넘겨주기
+                            Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditScreen()));
                           },
                           child: Text('Sell'),
                           shape: RoundedRectangleBorder(
