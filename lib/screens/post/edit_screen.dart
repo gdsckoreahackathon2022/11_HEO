@@ -28,7 +28,10 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
+    if(Get.arguments['title'] != null){
     _newTitleCon.text = Get.arguments['title'];
+    }
+    else{}
   }
 
   @override
@@ -72,22 +75,16 @@ class _EditScreenState extends State<EditScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-
-        // 게시글 작성자인지 판단
-        title: postId != "null"
-            ? Text(
-                '이웃거래 글 수정하기',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              )
-            : Text(
-                '이웃거래 글쓰기',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-        centerTitle: true,
-        elevation: 0.0,
+        backgroundColor: Colors.white,
+        title: Image.asset(
+            'assets/logo_img.png',
+            width: 90,
+          ),
+          centerTitle: true,
+        elevation: 0.5,
         leading: IconButton(
-          icon: Icon(Icons.close),
+          color: Colors.black,
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Get.back();
           },
@@ -98,7 +95,7 @@ class _EditScreenState extends State<EditScreen> {
               "완료",
             ),
             style: TextButton.styleFrom(
-              primary: Colors.white,
+              primary: Colors.black,
               textStyle: TextStyle(
                 fontSize: 14,
               ),
@@ -316,7 +313,7 @@ class _EditScreenState extends State<EditScreen> {
 
     // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
     // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
-    _bottomNavigationPageController.changePage(2);
+    _bottomNavigationPageController.changePage(1);
     Get.offAllNamed('/tap');
   }
 
