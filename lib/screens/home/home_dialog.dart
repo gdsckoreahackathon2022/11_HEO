@@ -50,13 +50,17 @@ class _HomeDialogState extends State<HomeDialog> {
                       //식재료 이름
                       Text(
                         widget.ingredient.name,
+                        style: TextStyle(
+                                      color: Colors.green.shade900,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)
                       ),
                       SizedBox(
                         height: 10.0,
                       ),
                       Center(
                           child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(1.0),
                         child: Container(
                           width: 180,
                           //판매 버튼
@@ -70,11 +74,14 @@ class _HomeDialogState extends State<HomeDialog> {
                                 "name":widget.ingredient.name
                               });
                             },
-                            child: Text('Sell'),
+                            child: Text('판매',
+                            style: TextStyle(
+                                      color: Colors.white,)),
                             shape: RoundedRectangleBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0))),
+                                    BorderRadius.all(Radius.circular(20.0))),
                           ),
+                          
                         ),
                       )),
                       //레시피 추천 버튼
@@ -85,11 +92,15 @@ class _HomeDialogState extends State<HomeDialog> {
                             "product" : widget.ingredient.name
                               });
                         },
-                        child: Text('Recipe recommendation'),
+                        child: Text('레시피 추천',
+                        style: TextStyle(
+                                      color: Colors.white,
+                                      )),
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(30.0))),
+                                BorderRadius.all(Radius.circular(20.0))),
                       ),
+                      SizedBox(height: 10.0,),
                     ],
                   ),
                 ),

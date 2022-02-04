@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:study/controller/bottom_navigation_page_controller.dart';
+import 'package:study/controller/users_controller.dart';
 import 'package:study/repository/location_repository.dart';
+import 'package:study/screens/mypage/info.dart';
 
 class tap extends StatefulWidget {
   @override
@@ -10,6 +13,7 @@ class tap extends StatefulWidget {
 
 class _tapState extends State<tap> {
   LocationRepository _locationRepository = LocationRepository();
+  UsersController _usersController = Get.put(UsersController());
   BottomNavigationPageController _bottomNavigationPageController =
       Get.put(BottomNavigationPageController());
   late String currentPosition;
@@ -65,5 +69,19 @@ class _tapState extends State<tap> {
 
   Future locationCheck() async {
     currentPosition = await _locationRepository.getCurrentLocation();
+    await readData();
+  }
+
+  Future readData() async {
+    final userCollectionReference = FirebaseFirestore.instance
+        .collection("users")
+        .doc(auth.currentUser!.uid);
+    await userCollectionReference.get().then((value) async {
+      _usersController.setData(
+          value.data()!["nickName"], value.data()!["phone"]);
+
+      print("asdsad${value.data()}");
+      print(value.data()!["nickName"]);
+    });
   }
 }
