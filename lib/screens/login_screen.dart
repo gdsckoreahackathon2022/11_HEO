@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:study/controller/location_controller.dart';
 import 'package:study/repository/location_repository.dart';
 import 'package:study/screens/bottom_tapbar.dart';
-import 'package:study/screens/home/home_screen.dart';
 import 'package:study/screens/registration_screen.dart';
 import 'package:study/model/helper_widget.dart';
 
@@ -15,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  LocationController _locationController = Get.put(LocationController());
   LocationRepository _locationRepository = LocationRepository();
   late String currentPosition;
   
@@ -212,5 +214,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   Future locationCheck() async {
     currentPosition = await _locationRepository.getCurrentLocation();
+     await _locationController.getPosition(currentPosition);
   }
 }

@@ -39,6 +39,19 @@ class _AddListScreenState extends State<AddListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
+
+        // 뒤로가기 버튼 생성!
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            size: 30,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        
         backgroundColor: Colors.white,
         elevation: 0.0,
         title: Image.asset(
@@ -87,7 +100,7 @@ class _AddListScreenState extends State<AddListScreen> {
                 ),
                 backgroundColor: Colors.green.shade300,
                 heroTag: 'auto',
-                onPressed: (){
+                onPressed: () {
                   if (tf) {
                     setState(() {
                       view = AnimatedList(
@@ -139,7 +152,6 @@ class _AddListScreenState extends State<AddListScreen> {
     ImagePicker picker = ImagePicker();
     var image = await picker.pickImage(source: ImageSource.gallery);
 
-  
     /*
       tesseract를 통해 영수증 이미지에서 텍스트 추출(인식 언어는 한국어+영어)
       psm 값은 4,6,11이 한국어 인식 가능 번호
@@ -231,7 +243,7 @@ class _AddListScreenState extends State<AddListScreen> {
         .then((value) => value.split('\n'));
     for (int i = 0; i < a.length; i++) {
       RegExp exp = new RegExp(a[i], caseSensitive: false);
-      if (exp.hasMatch(text)){
+      if (exp.hasMatch(text)) {
         insertItem(a[i]);
       }
     }

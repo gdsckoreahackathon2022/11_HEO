@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:intl/intl.dart';
+import 'package:study/controller/bottom_navigation_page_controller.dart';
 import 'package:study/controller/crud_controller.dart';
 
 import 'comment_screen.dart';
@@ -14,6 +14,8 @@ class PostDetailScreen extends StatefulWidget {
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
   CommentScreen _commentScreen = CommentScreen();
+  BottomNavigationPageController _bottomNavigationPageController =
+      Get.put(BottomNavigationPageController());
 
   var _isLoading = false;
   final _commentFocusNode = FocusNode();
@@ -103,10 +105,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                               // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
                               // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
-                              // 이동 시 주소를 전달
-                              Get.offAllNamed("/post", arguments: {
-                                "currentPosition": currentPosition
-                              });
+                              _bottomNavigationPageController.changePage(2);
+                              Get.offAllNamed('/tap');
                             },
                           ),
                         ],

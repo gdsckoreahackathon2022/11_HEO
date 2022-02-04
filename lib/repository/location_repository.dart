@@ -35,6 +35,8 @@ class LocationRepository {
     return await Geolocator.getCurrentPosition();
   }
 
+  
+
   Future getCurrentLocation() async {
     var position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);

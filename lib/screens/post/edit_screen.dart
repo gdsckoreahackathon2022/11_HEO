@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:study/controller/bottom_navigation_page_controller.dart';
 import 'package:study/controller/crud_controller.dart';
 import 'package:study/controller/image_crop_controller.dart';
 import 'package:study/model/user_model.dart';
@@ -18,6 +19,8 @@ class EditScreen extends StatefulWidget {
 
 class _EditScreenState extends State<EditScreen> {
   FireStorageRepository _fireStorageRepository = FireStorageRepository();
+  BottomNavigationPageController _bottomNavigationPageController =
+      Get.put(BottomNavigationPageController());
 
   @override
   void initState() {
@@ -51,7 +54,8 @@ class _EditScreenState extends State<EditScreen> {
 
   late ProgressDialog pr;
   UserModel userModel = UserModel();
-  List<Asset> images = <Asset>[]; // multi_image_picker2를 통해 여러 사진을 asset 타입으로 저장 
+  List<Asset> images =
+      <Asset>[]; // multi_image_picker2를 통해 여러 사진을 asset 타입으로 저장
   List<String> loadImage = []; // 이미지를 Url로 변환하여 String 타입으로 저장
   String currentPosition = Get.arguments["currentPosition"]; // 주소
 
@@ -111,8 +115,8 @@ class _EditScreenState extends State<EditScreen> {
               // 필수 입력 항목을 모두 작성했다면 getImage() 실행
               if (errorMsg == "") {
                 getImage();
-              
-              // 필수 입력 항목을 작성하지 않았다면 dialog 실행
+
+                // 필수 입력 항목을 작성하지 않았다면 dialog 실행
               } else {
                 showMsgDialog(errorMsg);
               }
@@ -133,7 +137,7 @@ class _EditScreenState extends State<EditScreen> {
                   child: buildGridView(),
                 ),
 
-                // 제목 
+                // 제목
                 TextFormField(
                   controller: _newTitleCon,
                   decoration: InputDecoration(
@@ -282,7 +286,7 @@ class _EditScreenState extends State<EditScreen> {
 
     // 반복문을 통해 모든 사진을 확인
     for (int i = 0; i < images.length; i++) {
-      loadImage.add("a"); 
+      loadImage.add("a");
       var rnd = Random().nextInt(500) + 1;
 
       // asset 타입을 File 타입으로 변환
@@ -305,7 +309,10 @@ class _EditScreenState extends State<EditScreen> {
 
     await uploadImage();
 
-    Get.offAllNamed('/post', arguments: {"currentPosition": currentPosition});
+    // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
+    // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
+    _bottomNavigationPageController.changePage(2);
+    Get.offAllNamed('/tap');
   }
 
   // 이미지를 저장하고 Url를 가져오는데 시간이 오래 걸려서 딜레이를 시킴
@@ -316,7 +323,7 @@ class _EditScreenState extends State<EditScreen> {
       msg: '업로드 중...',
       progressBgColor: Colors.transparent,
     );
-    // 최대 5개 사진을 저장할 때 8초정도 걸림. 
+    // 최대 5개 사진을 저장할 때 8초정도 걸림.
     // 다른 방법을 고민중..
     await Future.delayed(Duration(seconds: 8), () {});
 
