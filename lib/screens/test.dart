@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:study/controller/crud_controller.dart';
 import 'package:study/controller/location_controller.dart';
 import 'package:study/model/post_model.dart';
 
-class PostScreen extends StatefulWidget {
+class TestScreen extends StatefulWidget {
   @override
-  PostScreenState createState() => PostScreenState();
+  TestScreenState createState() => TestScreenState();
 }
 
-class PostScreenState extends State<PostScreen> {
+class TestScreenState extends State<TestScreen> {
+  String uid = CRUDController.to.authUid();
+  String email = CRUDController.to.authEmail();
+
   @override
   Widget build(BuildContext context) {
+    print(uid);
+    print(email);
+
     return GetBuilder<LocationController>(builder: (controller) {
       String currentPosition = controller.addr;
+
       print("주소 : $currentPosition");
       return Scaffold(
         resizeToAvoidBottomInset: false, // textfield overflow xxxxxxxx
@@ -32,37 +40,22 @@ class PostScreenState extends State<PostScreen> {
             onRefresh: refreshList,
             color: Colors.green,
             child: _buildBody(context, currentPosition)),
-
-        // 게시물 추가 버튼
-        floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.green.shade300,
-            onPressed: () {
-              // EditScreen으로 넘어갈 때 postId와 currentPosition을 넘김
-              // postId : 게시글 수정하는지 확인하기 위해
-              // currentPosition : 어느 위치 게시글에 저장해야하는지 확인하기 위해
-              Get.toNamed("/edit", arguments: {
-                "postId": "",
-                "currentPosition": currentPosition,
-                "salesState": "판매중",
-              });
-            }),
       );
     });
   }
 
   Widget _buildBody(BuildContext context, currentPosition) {
+    print(uid);
     // 새로 고침 시에만 리스트를 업데이트 하기 위해 FutureBuilder 사용
     return GetBuilder<LocationController>(builder: (controller) {
       return FutureBuilder(
         // 특정 주소에 게시글만 확인
         future: FirebaseFirestore.instance
             .collection('posts')
-            .where("currentPosition", isEqualTo: currentPosition)
-            .orderBy('datetime', descending: true)
+            // .where("currentPosition", isEqualTo: currentPosition)
+            .where("uid", isEqualTo: uid)
+            .orderBy("datetime", descending: true)
+            // .where("description", isEqualTo: "ㅛㅇㅎㅇㅎㄹ")
             .get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) return Text("Error: ${snapshot.error}");
@@ -205,7 +198,7 @@ class PostScreenState extends State<PostScreen> {
                                 )
                               : Container(),
                           // 가격
-                          Text("${resPrice}won",
+                          Text("${resPrice}원",
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,

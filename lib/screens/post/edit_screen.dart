@@ -28,10 +28,8 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
-    if(Get.arguments['title'] != null){
-    _newTitleCon.text = Get.arguments['title'];
-    }
-    else{}
+    if(Get.arguments["name"] != null)
+      _newTitleCon.text = Get.arguments["name"];
   }
 
   @override
@@ -90,16 +88,12 @@ class _EditScreenState extends State<EditScreen> {
           },
         ),
         actions: <Widget>[
-          TextButton(
-            child: Text(
-              "완료",
-            ),
-            style: TextButton.styleFrom(
-              primary: Colors.black,
-              textStyle: TextStyle(
-                fontSize: 14,
-              ),
-            ),
+          IconButton(
+          icon: Icon(
+            Icons.check_circle,
+            color: Colors.green.shade800,
+            size: 30,
+          ),
             onPressed: () {
               // 필수 입력 항목을 작성해야 한다는 msg를 보냄.
               String errorMsg = "";
@@ -263,6 +257,9 @@ class _EditScreenState extends State<EditScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           content: Container(
             height: 100,
             child: Center(
@@ -270,7 +267,11 @@ class _EditScreenState extends State<EditScreen> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            MaterialButton(
+              shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30.0))),
+              color: Colors.green.shade500,
               child: Text("ok"),
               onPressed: () {
                 Get.back();
@@ -343,7 +344,7 @@ class _EditScreenState extends State<EditScreen> {
           loadImage, _newPriceCon.text, uid, currentPosition, salesState);
     } else {
       CRUDController.to.updateDoc(postId.toString(), _newTitleCon.text,
-          _newDescCon.text, loadImage, _newPriceCon.text, currentPosition);
+          _newDescCon.text, loadImage, _newPriceCon.text);
     }
   }
 }

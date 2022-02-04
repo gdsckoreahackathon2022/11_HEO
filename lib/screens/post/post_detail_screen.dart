@@ -95,7 +95,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     title: new Text(
                                       '정보 수정',
                                       style: TextStyle(
-                                        color: Colors.green.shade800,
+                                        color: Colors.green.shade900,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     subtitle:
@@ -127,7 +127,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     title: new Text(
                                       '상태 변경',
                                       style: TextStyle(
-                                        color: Colors.green.shade800,
+                                        color: Colors.green.shade900,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onTap: () {
@@ -145,7 +145,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     title: new Text(
                                       '삭제',
                                       style: TextStyle(
-                                        color: Colors.green.shade800,
+                                        color: Colors.green.shade900,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onTap: () {
@@ -163,7 +163,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     title: new Text(
                                       '취소',
                                       style: TextStyle(
-                                        color: Colors.green.shade800,
+                                        color: Colors.green.shade900,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onTap: () {
@@ -435,11 +435,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
             onPressed: () {
               // 게시글 삭제
-              CRUDController.to.deleteDoc(postId, currentPosition);
+              CRUDController.to.deleteDoc(postId);
 
               // 게시글 삭제 후 PostScreen으로 모든 페이지를 제거 후 이동
               // 모든 페이지를 제거하지 않고 이동하면 이전 페이지가 stack이 쌓임
-              _bottomNavigationPageController.changePage(2);
+              _bottomNavigationPageController.changePage(1);
               Get.offAllNamed('/tap');
             },
           ),
@@ -481,7 +481,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   onTap: () {
                     salesState = "판매중";
                     CRUDController.to
-                        .stateUpdateDoc(postId, currentPosition, salesState);
+                        .stateUpdateDoc(postId, salesState);
                     _bottomNavigationPageController.changePage(2);
                     Get.offAllNamed('/tap');
                   },
@@ -495,7 +495,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   onTap: () {
                     salesState = "거래완료";
                     CRUDController.to
-                        .stateUpdateDoc(postId, currentPosition, salesState);
+                        .stateUpdateDoc(postId, salesState);
                     _bottomNavigationPageController.changePage(2);
                     Get.offAllNamed('/tap');
                   },

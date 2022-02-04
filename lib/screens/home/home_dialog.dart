@@ -71,10 +71,10 @@ class _HomeDialogState extends State<HomeDialog> {
                                 "postId": "",
                                 "currentPosition": currentPosition,
                                 "salesState": "판매중",
-                                "title": widget.ingredient.name,
+                                "name":widget.ingredient.name
                               });
                             },
-                            child: Text('Sell',
+                            child: Text('판매',
                             style: TextStyle(
                                       color: Colors.white,)),
                             shape: RoundedRectangleBorder(
@@ -87,8 +87,12 @@ class _HomeDialogState extends State<HomeDialog> {
                       //레시피 추천 버튼
                       MaterialButton(
                         color: Colors.green.shade300,
-                        onPressed: () {},
-                        child: Text('Recipe recommendation',
+                        onPressed: () {
+                          Get.toNamed("/toCrawl", arguments: {
+                            "product" : widget.ingredient.name
+                              });
+                        },
+                        child: Text('레시피 추천',
                         style: TextStyle(
                                       color: Colors.white,
                                       )),

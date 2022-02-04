@@ -39,12 +39,10 @@ class _AddListScreenState extends State<AddListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-
         // 뒤로가기 버튼 생성!
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            size: 30,
             color: Colors.black,
           ),
           onPressed: () {
@@ -60,8 +58,13 @@ class _AddListScreenState extends State<AddListScreen> {
         ),
         centerTitle: true,
         actions: [
-          TextButton(
-              onPressed: () {
+          IconButton(
+          icon: Icon(
+            Icons.check_circle,
+            color: Colors.green.shade800,
+            size: 30,
+          ),
+          onPressed: () {
                 if (products.length > 0) {
                   for (int i = 0; i < products.length; i++) {
                     add2Firebase(products[i]);
@@ -82,8 +85,8 @@ class _AddListScreenState extends State<AddListScreen> {
                   });
                   tf = !tf;
                 }
-              },
-              child: Text('등록'))
+              }
+        ),
         ],
       ),
       //애니메이션이 들어간 리스트
@@ -227,13 +230,14 @@ class _AddListScreenState extends State<AddListScreen> {
 
   //다이얼로그에 버튼 추가
   insertButton() {
-    return ElevatedButton(
+    return MaterialButton(
+      color: Colors.green.shade500,
         onPressed: () {
           insertItem(textController.text);
           Navigator.pop(context);
           textController.clear();
         },
-        child: Text('추가'));
+        child: Text('추가', style: TextStyle(color: Colors.white,)));
   }
 
   //분류 작업
