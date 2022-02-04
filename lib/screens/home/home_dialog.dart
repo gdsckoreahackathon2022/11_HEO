@@ -66,7 +66,8 @@ class _HomeDialogState extends State<HomeDialog> {
                               Get.toNamed("/edit", arguments: {
                                 "postId": "",
                                 "currentPosition": currentPosition,
-                                "salesState": "판매중"
+                                "salesState": "판매중",
+                                "title": widget.ingredient.name,
                               });
                             },
                             child: Text('Sell'),

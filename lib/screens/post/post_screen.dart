@@ -47,7 +47,7 @@ class PostScreenState extends State<PostScreen> {
               Get.toNamed("/edit", arguments: {
                 "postId": "",
                 "currentPosition": currentPosition,
-                "salesState": "판매중"
+                "salesState": "판매중",
               });
             }),
       );

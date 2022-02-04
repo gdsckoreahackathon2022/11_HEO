@@ -10,9 +10,12 @@ import 'package:study/controller/bottom_navigation_page_controller.dart';
 import 'package:study/controller/crud_controller.dart';
 import 'package:study/controller/image_crop_controller.dart';
 import 'package:study/model/user_model.dart';
+import 'package:study/model/list_ingredient.dart';
 import 'package:study/repository/firestorage_repository.dart';
+import 'package:study/screens/home/home_screen.dart';
 
 class EditScreen extends StatefulWidget {
+
   @override
   _EditScreenState createState() => _EditScreenState();
 }
@@ -25,6 +28,7 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
+    _newTitleCon.text = Get.arguments['title'];
   }
 
   @override
