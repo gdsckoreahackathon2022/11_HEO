@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:study/controller/location_controller.dart';
 import 'package:study/model/post_model.dart';
 
 class PostScreen extends StatefulWidget {
@@ -10,94 +11,91 @@ class PostScreen extends StatefulWidget {
 }
 
 class PostScreenState extends State<PostScreen> {
-  // 위치에 따라서 게시물을 보여주기 때문에 PostCreen으로 넘어올 때는 항상 currentPosition(주소)을 입력 받아야한다.
-  String currentPosition = Get.arguments["currentPosition"];
-
   @override
   Widget build(BuildContext context) {
-    print("주소가 잘 왔나? $currentPosition");
-    return Scaffold(
-      resizeToAvoidBottomInset: false, // textfield overflow xxxxxxxx
-      appBar: AppBar(
-        elevation: 1.0,
-        backgroundColor: Colors.white,
-        title: Image.asset(
-          'assets/logo_img.png',
-          width: 90,
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            size: 30,
-            color: Colors.black,
+    return GetBuilder<LocationController>(builder: (controller) {
+      String currentPosition = controller.addr;
+      print("주소 : $currentPosition");
+      return Scaffold(
+        resizeToAvoidBottomInset: false, // textfield overflow xxxxxxxx
+        appBar: AppBar(
+          elevation: 1.0,
+          backgroundColor: Colors.white,
+          title: Image.asset(
+            'assets/logo_img.png',
+            width: 90,
           ),
-          onPressed: () {
-            Get.back();
-          },
+          centerTitle: true,
         ),
-      ),
-      // 새로고침!
-      body: RefreshIndicator(
-          onRefresh: refreshList,
-          color: Colors.green,
-          child: _buildBody(context)),
+        // 새로고침!
+        body: RefreshIndicator(
+            onRefresh: refreshList,
+            color: Colors.green,
+            child: _buildBody(context, currentPosition)),
 
-      // 게시물 추가 버튼
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add, color: Colors.white,),
-          backgroundColor: Colors.green.shade300,
-          onPressed: () {
-            // EditScreen으로 넘어갈 때 postId와 currentPosition을 넘김
-            // postId : 게시글 수정하는지 확인하기 위해
-            // currentPosition : 어느 위치 게시글에 저장해야하는지 확인하기 위해
-            Get.toNamed("/edit",
-                arguments: {"postId": "", "currentPosition": currentPosition});
-          }),
-    );
+        // 게시물 추가 버튼
+        floatingActionButton: FloatingActionButton(
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.green.shade300,
+            onPressed: () {
+              // EditScreen으로 넘어갈 때 postId와 currentPosition을 넘김
+              // postId : 게시글 수정하는지 확인하기 위해
+              // currentPosition : 어느 위치 게시글에 저장해야하는지 확인하기 위해
+              Get.toNamed("/edit", arguments: {
+                "postId": "",
+                "currentPosition": currentPosition
+              });
+            }),
+      );
+    });
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody(BuildContext context, currentPosition) {
     // 새로 고침 시에만 리스트를 업데이트 하기 위해 FutureBuilder 사용
-    return FutureBuilder(
-      // 특정 주소에 게시글만 확인
-      future: FirebaseFirestore.instance
-          .collection('posts')
-          .doc(currentPosition)
-          .collection('post')
-          .orderBy('datetime', descending: true)
-          .get(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) return Text("Error: ${snapshot.error}");
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(
-                child: CircularProgressIndicator(color: Colors.green));
-          default:
-            return _buildList(context, snapshot.data!.docs);
-        }
-      },
-    );
+    return GetBuilder<LocationController>(builder: (controller) {
+      return FutureBuilder(
+        // 특정 주소에 게시글만 확인
+        future: FirebaseFirestore.instance
+            .collection('posts')
+            .doc(currentPosition)
+            .collection('post')
+            .orderBy('datetime', descending: true)
+            .get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) return Text("Error: ${snapshot.error}");
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                  child: CircularProgressIndicator(color: Colors.green));
+            default:
+              return _buildList(context, snapshot.data!.docs, currentPosition);
+          }
+        },
+      );
+    });
   }
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot,
+      String currentPosition) {
     if (snapshot.length == 0) {
       return Center(child: Text("게시글이 없습니다."));
     } else {
       // ListView로 게시글을 하나씩 확인
-      return Builder(
-        builder: (context) {
-          return ListView(
-            children: snapshot.map((DocumentSnapshot document) {
-              return _buildListItem(context, document);
-            }).toList(),
-          );
-        }
-      );
+      return Builder(builder: (context) {
+        return ListView(
+          children: snapshot.map((DocumentSnapshot document) {
+            return _buildListItem(context, document, currentPosition);
+          }).toList(),
+        );
+      });
     }
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+  Widget _buildListItem(
+      BuildContext context, DocumentSnapshot data, String currentPosition) {
     final currModel = PostModel.fromDocumnet(data);
 
     int price = int.parse(data['price']); // 가격을 int형을 변환
