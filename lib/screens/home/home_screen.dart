@@ -12,6 +12,7 @@ import 'package:study/screens/add_list/add_list_screen.dart';
 import 'package:study/screens/home/home_dialog.dart';
 import 'package:study/screens/home/show_list.dart';
 import 'package:study/screens/login_screen.dart';
+import 'package:study/screens/mypage/info.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,32 +31,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget difdate(int expire) {
     return Container(
         padding: EdgeInsets.fromLTRB(0, 1, 30, 1),
-        child: expire == 0?
-        Text('D-Day',style: TextStyle(
-                color: expire != 0?
-                Colors.black:Colors.red,
-                fontSize: 20,
-                fontWeight: FontWeight.bold)):
-        Text('D-${expire}',
-            style: TextStyle(
-                color: expire != 0?
-                Colors.black:Colors.red,
-                fontSize: 20,
-                fontWeight: FontWeight.bold)));
+        child: expire == 0
+            ? Text('D-Day',
+                style: TextStyle(
+                    color: expire != 0 ? Colors.black : Colors.red,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold))
+            : Text('D-$expire',
+                style: TextStyle(
+                    color: expire != 0 ? Colors.black : Colors.red,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)));
   }
 
   //디데이 계산
-  int datediffernce(String expire){
+  int datediffernce(String expire) {
     DateTime dateTime1 = DateTime.now();
     //입력한 유통기한
     var dateTime2 =
         DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.parse(expire)));
     //차이계산
     Duration duration = dateTime2.difference(dateTime1);
-    var day = duration.inDays+1;
-    
-    print(dateTime1);
-
+    var day = duration.inDays + 1;
     return day;
   }
 
@@ -86,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   logout(context);
                 },
               ),
-              
             ]),
         body: _isLoding
             ? SingleChildScrollView(
@@ -127,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 400,
                           child: Divider(
                               color: Colors.grey.shade300, thickness: 1.0)),
-                      
+
                       //식재료 리스트
                       Padding(
                         padding: EdgeInsets.fromLTRB(30, 1, 30, 10),
@@ -162,26 +158,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       //식재료 리스트 나열
                       StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
-                            .collection('List')
+                            .collection('Lists')
+                            .doc(auth.currentUser!.uid)
+                            .collection('ingredient')
                             .snapshots(),
-                        builder: (context,snapshot) {
+                        builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return CircularProgressIndicator();
                           }
                           final datas = snapshot.data!.docs;
                           return AnimatedList(
-                            physics: NeverScrollableScrollPhysics(),
-                            key: key,
-                            shrinkWrap: true,
-                            initialItemCount: datas.length,
-                            itemBuilder: (context,index,animation){
-                              var dday = datediffernce(datas[index].get('date'));
-                              var data = ListIngredient(name: datas[index].get('name'),expire: datas[index].get('date'),dday: dday);
-                              products.add(data);
-                              ListIngredient ingredient = ListIngredient(name: data.name, expire: data.expire,dday: data.dday);
-                              return ShowList(ingredient: ingredient, animation: animation, onClicked: ()=>removeItem(index));
-                            }
-                          );
+                              physics: NeverScrollableScrollPhysics(),
+                              key: key,
+                              shrinkWrap: true,
+                              initialItemCount: datas.length,
+                              itemBuilder: (context, index, animation) {
+                                var dday =
+                                    datediffernce(datas[index].get('date'));
+                                var data = ListIngredient(
+                                    name: datas[index].get('name'),
+                                    expire: datas[index].get('date'),
+                                    dday: dday);
+                                products.add(data);
+                                ListIngredient ingredient = ListIngredient(
+                                    name: data.name,
+                                    expire: data.expire,
+                                    dday: data.dday);
+                                return ShowList(
+                                    ingredient: ingredient,
+                                    animation: animation,
+                                    onClicked: () => removeItem(index));
+                              });
                         },
                       )
                     ],
@@ -205,7 +212,9 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return HomeDialog(ingredient: ingredient,);
+          return HomeDialog(
+            ingredient: ingredient,
+          );
         });
   }
 
@@ -213,7 +222,13 @@ class _HomeScreenState extends State<HomeScreen> {
   //제거 후 리스트가 비어있다면 텍스트 출력
   removeItem(int index) {
     final removedItem = products[index];
-    
+
+    var a = FirebaseFirestore.instance.collection('Lists')
+    .doc(auth.currentUser!.uid)
+    .collection('ingredients')
+    .where("name", isEqualTo: products[index].name)
+    .where("date", isEqualTo: products[index].expire).snapshots();
+
     products.removeAt(index);
     key.currentState!.removeItem(
         index,

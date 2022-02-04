@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:study/screens/add_list/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:study/screens/mypage/info.dart';
 
 class AddListScreen extends StatefulWidget {
   const AddListScreen({Key? key}) : super(key: key);
@@ -181,8 +182,7 @@ class _AddListScreenState extends State<AddListScreen> {
   }
 
   add2Firebase(ListItem item) {
-    FirebaseFirestore.instance.collection('List').add({
-      'user': auth.currentUser!.uid,
+    FirebaseFirestore.instance.collection('Lists').doc(auth.currentUser!.uid).collection('ingredient').add({
       'name': '${item.name}',
       'date': '${item.date}'
     });
