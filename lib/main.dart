@@ -21,7 +21,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   Color _primaryColor = Colors.green.shade300;
-  Color _accentColor = Colors.blue.shade300;
+  Color _accentColor = Colors.amber.shade200;
 
   @override
   Widget build(BuildContext context) {
