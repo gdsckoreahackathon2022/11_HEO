@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:study/controller/bottom_navigation_page_controller.dart';
 import 'package:study/model/list_item.dart';
 import 'package:study/screens/add_list/list_item_widget.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,6 +30,8 @@ class _AddListScreenState extends State<AddListScreen> {
   bool tf = true;
   String today = '';
   FirebaseAuth auth = FirebaseAuth.instance;
+  BottomNavigationPageController _bottomNavigationPageController =
+      Get.put(BottomNavigationPageController());
 
   @override
   void initState() {
@@ -50,7 +54,7 @@ class _AddListScreenState extends State<AddListScreen> {
             Navigator.pop(context);
           },
         ),
-        
+
         backgroundColor: Colors.white,
         elevation: 0.0,
         title: Image.asset(
@@ -60,12 +64,12 @@ class _AddListScreenState extends State<AddListScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-          icon: Icon(
-            Icons.check_circle,
-            color: Colors.green.shade800,
-            size: 30,
-          ),
-          onPressed: () {
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green.shade800,
+                size: 30,
+              ),
+              onPressed: () {
                 if (products.length > 0) {
                   for (int i = 0; i < products.length; i++) {
                     add2Firebase(products[i]);
@@ -86,8 +90,9 @@ class _AddListScreenState extends State<AddListScreen> {
                   });
                   tf = !tf;
                 }
-              }
-        ),
+                _bottomNavigationPageController.changePage(0);
+                Get.offAllNamed('/tap');
+              }),
         ],
       ),
       //애니메이션이 들어간 리스트
@@ -182,10 +187,11 @@ class _AddListScreenState extends State<AddListScreen> {
   }
 
   add2Firebase(ListItem item) {
-    FirebaseFirestore.instance.collection('Lists').doc(auth.currentUser!.uid).collection('ingredient').add({
-      'name': '${item.name}',
-      'date': '${item.date}'
-    });
+    FirebaseFirestore.instance
+        .collection('Lists')
+        .doc(auth.currentUser!.uid)
+        .collection('ingredient')
+        .add({'name': '${item.name}', 'date': '${item.date}'});
   }
 
   //리스트에서 아이템 제거
@@ -231,13 +237,16 @@ class _AddListScreenState extends State<AddListScreen> {
   //다이얼로그에 버튼 추가
   insertButton() {
     return MaterialButton(
-      color: Colors.green.shade500,
+        color: Colors.green.shade500,
         onPressed: () {
           insertItem(textController.text);
           Navigator.pop(context);
           textController.clear();
         },
-        child: Text('추가', style: TextStyle(color: Colors.white,)));
+        child: Text('추가',
+            style: TextStyle(
+              color: Colors.white,
+            )));
   }
 
   //분류 작업
