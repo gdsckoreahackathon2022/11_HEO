@@ -52,14 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
         DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.parse(expire)));
     //차이계산
     Duration duration = dateTime2.difference(dateTime1);
-<<<<<<< HEAD
-    var day = duration.inDays + 1;
-=======
     var day = duration.inDays;
     
     print(dateTime1);
 
->>>>>>> a7b045fe9430a622fa8303f45874f8b3e88faa1a
     return day;
   }
 
@@ -213,17 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
-  //홈 다이얼로그 창
-  void Dialog(ListIngredient ingredient) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return HomeDialog(
-            ingredient: ingredient,
-          );
-        });
-  }
+  
 
   //리스트에서 아이템 제거
   //제거 후 리스트가 비어있다면 텍스트 출력

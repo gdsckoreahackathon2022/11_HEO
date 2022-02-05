@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study/model/list_ingredient.dart';
 import 'package:study/model/list_item.dart';
+import 'home_dialog.dart';
 
 class ShowList extends StatefulWidget {
   ListIngredient ingredient;
@@ -26,36 +27,39 @@ class _ShowListState extends State<ShowList> {
       SizeTransition(sizeFactor: widget.animation, child: buildItem(context));
 
   Widget buildItem(BuildContext context) {
-    return Container(
-      height: 75,
-      margin: EdgeInsets.fromLTRB(25, 3, 25, 10),
-      padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.lightGreen.shade100),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              Text(widget.ingredient.name,
-                  style: TextStyle(
-                    color: Colors.blueGrey.shade800,
-                    fontSize: 20,
-                  )),
-              SizedBox(
-                height: 5,
-              ),
-              Text(widget.ingredient.expire,
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 15,
-                  )),
-            ],
-          ),
-          difdate(widget.ingredient.dday),
-          IconButton(onPressed: widget.onClicked, icon: Icon(Icons.clear))
-        ],
+    return GestureDetector(
+      onTap: (){Dialog(widget.ingredient);},
+      child: Container(
+        height: 75,
+        margin: EdgeInsets.fromLTRB(25, 3, 25, 10),
+        padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.lightGreen.shade100),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Text(widget.ingredient.name,
+                    style: TextStyle(
+                      color: Colors.blueGrey.shade800,
+                      fontSize: 20,
+                    )),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(widget.ingredient.expire,
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 15,
+                    )),
+              ],
+            ),
+            difdate(widget.ingredient.dday),
+            IconButton(onPressed: widget.onClicked, icon: Icon(Icons.clear))
+          ],
+        ),
       ),
     );
   }
@@ -80,5 +84,16 @@ class _ShowListState extends State<ShowList> {
                         color: expire != 0 ? Colors.blue : Colors.red,
                         fontSize: 20,
                         fontWeight: FontWeight.bold)));
+  }
+  //홈 다이얼로그 창
+  void Dialog(ListIngredient ingredient) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return HomeDialog(
+            ingredient: ingredient,
+          );
+        });
   }
 }
