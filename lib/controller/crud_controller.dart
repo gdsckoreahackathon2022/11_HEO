@@ -86,7 +86,7 @@ class CRUDController extends GetxController {
   /// ************************************** commentScreen *********************************************************/
 
   // 문서 생성
-  void createComment(String comment, String uid, String name, String postId) {
+  void createComment(String comment, String uid, String nickName, String postId) {
     FirebaseFirestore.instance
         .collection("comments")
         .doc(postId)
@@ -95,7 +95,7 @@ class CRUDController extends GetxController {
       "comment": comment,
       fnDatetime: Timestamp.now(),
       fnUid: uid,
-      fnName: name
+      fnName: nickName
     });
   }
 
