@@ -34,15 +34,6 @@ class _infoState extends State<info> {
           width: 90,
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.check_circle,
-                color: Colors.green.shade800,
-                size: 30,
-              ),
-              onPressed: () {}),
-        ],
       ),
       body: Form(
         child: SingleChildScrollView(

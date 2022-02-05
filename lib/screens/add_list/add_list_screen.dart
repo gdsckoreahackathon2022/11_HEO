@@ -131,7 +131,7 @@ class _AddListScreenState extends State<AddListScreen> {
                   Icons.add,
                   color: Colors.white,
                 ),
-                backgroundColor: Colors.blue.shade300,
+                backgroundColor: Colors.green.shade600,
                 heroTag: 'manual',
                 onPressed: () {
                   if (tf) {

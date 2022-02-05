@@ -50,15 +50,20 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text(
-            "식자재 설명",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          backgroundColor: Colors.white,
+          title: Image.asset(
+            'assets/logo_img.png',
+            width: 90,
+          ),
+          elevation: 0.5,
+          leading: IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.back();
+            },
           ),
           centerTitle: true,
-          elevation: 0.0,
 
           // 글쓴이가 자기 자신이면 수정, 삭제 버튼 활성
           actions: uid == Get.arguments["uid"]
@@ -71,6 +76,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   // 메뉴 버튼
                   IconButton(
                     icon: const Icon(Icons.menu),
+                    color: Colors.black,
                     onPressed: () {
                       showModalBottomSheet(
                           backgroundColor: Colors.transparent,
@@ -90,18 +96,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  ListTile(
-                                    title: Center(
-                                        child: new Text(
-                                      '더보기',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    )),
+                                  SizedBox(
+                                    height: 20,
                                   ),
                                   ListTile(
                                       title: new Text(
                                         '정보 수정',
                                         style: TextStyle(
+                                            color: Colors.green.shade900,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Text(
@@ -134,6 +136,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                       title: new Text(
                                         '상태 변경',
                                         style: TextStyle(
+                                            color: Colors.green.shade900,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       onTap: () {
@@ -152,6 +155,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                       title: new Text(
                                         '삭제',
                                         style: TextStyle(
+                                            color: Colors.green.shade900,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       onTap: () {
@@ -170,6 +174,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                       title: new Text(
                                         '취소',
                                         style: TextStyle(
+                                            color: Colors.green.shade900,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       onTap: () {
@@ -392,7 +397,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                                         if (_formKey.currentState!.validate()) {
                                           CRUDController.to.createComment(
-                                              commentText, uid, nickName, postId);
+                                              commentText,
+                                              uid,
+                                              nickName,
+                                              postId);
 
                                           _commentTextEditController.clear();
                                           _commentFocusNode.unfocus();
@@ -427,20 +435,26 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           '정말 게시글를 삭제할까요?',
         ),
         actions: <Widget>[
-          FlatButton(
+          MaterialButton(
+            color: Colors.green.shade400,
             child: Text(
               '취소',
-              style: TextStyle(color: Theme.of(context).primaryColor),
+              style: TextStyle(color: Colors.white),
             ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             onPressed: () {
               Get.back();
             },
           ),
-          FlatButton(
+          MaterialButton(
+            color: Colors.green.shade400,
             child: Text(
               '확인',
-              style: TextStyle(color: Theme.of(context).primaryColor),
+              style: TextStyle(color: Colors.white),
             ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             onPressed: () {
               // 게시글 삭제
               CRUDController.to.deleteDoc(postId);

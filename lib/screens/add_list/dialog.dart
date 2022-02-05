@@ -77,9 +77,6 @@ class _ListDialogState extends State<ListDialog> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
-
-                    _bottomNavigationPageController.changePage(1);
-                    Get.offAllNamed('/tap');
                   },
                   child: Align(
                     alignment: Alignment.topRight,

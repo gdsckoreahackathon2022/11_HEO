@@ -85,20 +85,23 @@ class _HomeDialogState extends State<HomeDialog> {
                         ),
                       )),
                       //레시피 추천 버튼
-                      MaterialButton(
-                        color: Colors.green.shade300,
-                        onPressed: () {
-                          Get.toNamed("/toCrawl", arguments: {
-                            "product" : widget.ingredient.name
-                              });
-                        },
-                        child: Text('레시피 추천',
-                        style: TextStyle(
-                                      color: Colors.white,
-                                      )),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
+                      Container(
+                        width: 180,
+                        child: MaterialButton(
+                          color: Colors.green.shade300,
+                          onPressed: () {
+                            Get.toNamed("/toCrawl", arguments: {
+                              "product" : widget.ingredient.name
+                                });
+                          },
+                          child: Text('레시피 추천',
+                          style: TextStyle(
+                                        color: Colors.white,
+                                        )),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                        ),
                       ),
                       SizedBox(height: 10.0,),
                     ],
