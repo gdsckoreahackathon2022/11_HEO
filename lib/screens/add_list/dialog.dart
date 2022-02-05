@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:study/controller/bottom_navigation_page_controller.dart';
 
 class ListDialog extends StatefulWidget {
   Widget button;
@@ -12,6 +14,8 @@ class ListDialog extends StatefulWidget {
 }
 
 class _ListDialogState extends State<ListDialog> {
+  BottomNavigationPageController _bottomNavigationPageController =
+      Get.put(BottomNavigationPageController());
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -63,7 +67,8 @@ class _ListDialogState extends State<ListDialog> {
                         ),
                     SizedBox(height: 10.0),
                     Container(
-                        padding: EdgeInsets.only(bottom: 10), child: widget.button),
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: widget.button),
                   ],
                 ),
               ),
@@ -72,6 +77,9 @@ class _ListDialogState extends State<ListDialog> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
+
+                    _bottomNavigationPageController.changePage(1);
+                    Get.offAllNamed('/tap');
                   },
                   child: Align(
                     alignment: Alignment.topRight,

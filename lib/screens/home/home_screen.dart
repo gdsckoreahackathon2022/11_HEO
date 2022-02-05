@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //차이계산
     Duration duration = dateTime2.difference(dateTime1);
     var day = duration.inDays;
-    
+
     print(dateTime1);
 
     return day;
@@ -176,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               shrinkWrap: true,
                               initialItemCount: datas.length,
                               itemBuilder: (context, index, animation) {
+                                print(datas[index].get('date'));
                                 var dday =
                                     datediffernce(datas[index].get('date'));
                                 var data = ListIngredient(
@@ -215,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //제거 후 리스트가 비어있다면 텍스트 출력
   removeItem(int index) {
     final removedItem = products[index];
-    var e =getInfo(index);
+    getInfo(index);
 
     products.removeAt(index);
     key.currentState!.removeItem(
@@ -226,17 +227,24 @@ class _HomeScreenState extends State<HomeScreen> {
     print('removed');
   }
 
-  getInfo(int index) async{
-    var a = FirebaseFirestore.instance.collection('Lists')
-    .doc(auth.currentUser!.uid)
-    .collection('ingredient')
-    .where("name", isEqualTo: products[index].name)
-    .where("date", isEqualTo: products[index].expire);
+  getInfo(int index) async {
+    var a = FirebaseFirestore.instance
+        .collection('Lists')
+        .doc(auth.currentUser!.uid)
+        .collection('ingredient')
+        .where("name", isEqualTo: products[index].name)
+        .where("date", isEqualTo: products[index].expire);
 
     var b = await a.get();
     var c = b.docs[0].reference;
     print('>>>>>$c');
+    print(c.id);
 
-    
+    return FirebaseFirestore.instance
+        .collection("Lists")
+        .doc(auth.currentUser!.uid)
+        .collection("ingredient")
+        .doc(c.id)
+        .delete();
   }
 }
