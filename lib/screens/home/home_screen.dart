@@ -44,13 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
     //입력한 유통기한
     var dateTime2 =
         DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.parse(expire)));
+
+    print("aaa$dateTime1");
+    print("aaa$dateTime2");
     //차이계산
     Duration duration = dateTime2.difference(dateTime1);
-    var day = duration.inDays;
-    
-    print(dateTime1);
-
-    return day;
+    print("Bb${duration.inHours}");
+    if (duration.inHours <= 24 && duration.inHours >= 0) {
+      return duration.inDays;
+    } else {
+      return duration.inDays - 1;
+    }
   }
 
   @override
@@ -175,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 var data = ListIngredient(
                                     name: datas[index].get('name'),
                                     expire: datas[index].get('date'),
-                                    dday: dday+1);
+                                    dday: dday + 1);
                                 products.add(data);
                                 ListIngredient ingredient = ListIngredient(
                                     name: data.name,
@@ -203,8 +207,6 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
-  
-
   //리스트에서 아이템 제거
   //제거 후 리스트가 비어있다면 텍스트 출력
   removeItem(int index) {
@@ -220,12 +222,13 @@ class _HomeScreenState extends State<HomeScreen> {
     print('removed');
   }
 
-  deleteItem(int index) async{
-    var a = FirebaseFirestore.instance.collection('Lists')
-    .doc(auth.currentUser!.uid)
-    .collection('ingredient')
-    .where("name", isEqualTo: products[index].name)
-    .where("date", isEqualTo: products[index].expire);
+  deleteItem(int index) async {
+    var a = FirebaseFirestore.instance
+        .collection('Lists')
+        .doc(auth.currentUser!.uid)
+        .collection('ingredient')
+        .where("name", isEqualTo: products[index].name)
+        .where("date", isEqualTo: products[index].expire);
 
     var b = await a.get();
     var c = b.docs[0].reference;

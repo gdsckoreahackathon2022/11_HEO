@@ -27,7 +27,9 @@ class _ShowListState extends State<ShowList> {
 
   Widget buildItem(BuildContext context) {
     return GestureDetector(
-      onTap: (){dialog(widget.ingredient);},
+      onTap: () {
+        dialog(widget.ingredient);
+      },
       child: Container(
         height: 75,
         margin: EdgeInsets.fromLTRB(25, 3, 25, 10),
@@ -55,6 +57,7 @@ class _ShowListState extends State<ShowList> {
                     )),
               ],
             ),
+            SizedBox(width: 100.0,),
             difdate(widget.ingredient.dday),
             IconButton(onPressed: widget.onClicked, icon: Icon(Icons.clear))
           ],
@@ -84,6 +87,7 @@ class _ShowListState extends State<ShowList> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold)));
   }
+
   //홈 다이얼로그 창
   void dialog(ListIngredient ingredient) {
     showDialog(
