@@ -57,7 +57,9 @@ class _ShowListState extends State<ShowList> {
                     )),
               ],
             ),
-            SizedBox(width: 100.0,),
+            SizedBox(
+              width: 80.0,
+            ),
             difdate(widget.ingredient.dday),
             IconButton(onPressed: widget.onClicked, icon: Icon(Icons.clear))
           ],
