@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   LocationController _locationController = Get.put(LocationController());
   LocationRepository _locationRepository = LocationRepository();
   late String currentPosition;
-  
+
   double _headerHeight = 200;
   final _formKey = GlobalKey<FormState>();
 
@@ -45,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
       keyboardType: TextInputType.emailAddress, //이메일의 경우 이메일 형식으로 쓰이도록 함.
       validator: (value) {
         if (value!.isEmpty) {
-          // return ("Please Enter Your Email");
-          return ("이메일을 입력하십시오. ");
+          return ("Please Enter Your Email");
+          // return ("이메일을 입력하십시오. ");
         }
 
         //reg expression for email validation
         if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
-          // return ("Please Enter a valid email");
-          return ("이메일 형식에 맞춰서 입력하십시오. ");
+          return ("Please Enter a valid email");
+          // return ("이메일 형식에 맞춰서 입력하십시오. ");
         }
         return null;
       },
@@ -75,13 +75,13 @@ class _LoginScreenState extends State<LoginScreen> {
       validator: (value) {
         RegExp regex = new RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
-          // return ("Password is required for login");
-          return ("로그인을 위해 비밀번호가 필요합니다.");
+          return ("Password is required for login");
+          // return ("로그인을 위해 비밀번호가 필요합니다.");
         }
         if (!regex.hasMatch(value)) {
-          // return ("Enter Valid Password(Min. 6 Character");
+          return ("Enter Valid Password(Min. 6 Character");
           // return ("유효한 비밀번호(최소 6자)를 입력하십시오.");
-          return ("비밀번호를 잘못 입력하셨습니다."); //6자 이상 입력해도 틀리면 사용자가 없다고 문구가 뜨긴하는데.. 그리고 if문이 6자 이상 안쳤을때 나오는 문구라..고민중
+          // return ("비밀번호를 잘못 입력하셨습니다.");
         }
       },
       onSaved: (value) {
@@ -200,11 +200,10 @@ class _LoginScreenState extends State<LoginScreen> {
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-                // Fluttertoast.showToast(msg: "Login Successful!"),
-                Fluttertoast.showToast(msg: "Login success!"),
+                Fluttertoast.showToast(msg: "Login Successful!"),
+                // Fluttertoast.showToast(msg: "Login success!"),
 
                 Navigator.of(context).pushReplacement(
-                    //뒤로가기 하고싶으면 push로 바꾸기(코드 계속 재실행시키기 귀찮으니까..?)
                     MaterialPageRoute(builder: (context) => tap())),
               })
           .catchError((e) {
@@ -212,8 +211,9 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
   Future locationCheck() async {
     currentPosition = await _locationRepository.getCurrentLocation();
-     await _locationController.getPosition(currentPosition);
+    await _locationController.getPosition(currentPosition);
   }
 }

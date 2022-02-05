@@ -37,15 +37,15 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
         //Field 내에 입력된 텍스트를 인자로 받는 콜백함수를 인자로 받는다.
         if (value!.isEmpty) {
           //빈칸일 경우
-          // return ("Please Enter Your Email");
-          return ("이메일을 입력하십시오. ");
+          return ("Please Enter Your Email");
+          // return ("이메일을 입력하십시오. ");
         }
 
         //reg expression for email validation
         //RegExp 객체의 hasMatch 함수의 인자로 텍스트를 넘기면 이메일 형식이 맞는지 텍스트를 검증하게 된다.
         if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
-          // return ("Please Enter a valid email");
-          return ("이메일 형식에 맞춰서 입력하십시오. ");
+          return ("Please Enter a valid email");
+          // return ("이메일 형식에 맞춰서 입력하십시오. ");
         }
         return null;
       },
@@ -68,12 +68,12 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
       validator: (value) {
         RegExp regex = new RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
-          // return ("Password is required for login");
-          return ("로그인을 위해 비밀번호가 필요합니다.");
+          return ("Password is required for login");
+          // return ("로그인을 위해 비밀번호가 필요합니다.");
         }
         if (!regex.hasMatch(value)) {
-          // return ("Enter Valid Password(Min. 6 Character");
-          return ("유효한 비밀번호(최소 6자)를 입력하십시오.");
+          return ("Enter Valid Password(Min. 6 Character");
+          // return ("유효한 비밀번호(최소 6자)를 입력하십시오.");
         }
       },
       onSaved: (value) {
@@ -117,12 +117,12 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
       validator: (value) {
         RegExp regex = new RegExp(r'^.{2,}$');
         if (value!.isEmpty) {
-          // return ("NickName cannot be Empty");
-          return ("서비스를 이용하시려면 닉네임이 필요합니다.");
+          return ("NickName cannot be Empty");
+          // return ("서비스를 이용하시려면 닉네임이 필요합니다.");
         }
         if (!regex.hasMatch(value)) {
-          // return ("Enter Valid Nickname(Min. 2 Character");
-          return ("유효한 닉네임(최소 2자)을 입력하십시오. ");
+          return ("Enter Valid Nickname(Min. 2 Character");
+          // return ("유효한 닉네임(최소 2자)을 입력하십시오. ");
         }
         return null;
       },
@@ -151,9 +151,9 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
           return ("전화번호를 입력하십시오. ");
         }
         if (!regex.hasMatch(value)) {
-          // return ("Enter Valid Phone(Min. 10 Character");
+          return ("Enter Valid Phone(Min. 10 Character");
           // return ("XXX-XXXX-XXXX 형식으로 입력하십시오. ");
-          return ("알맞은 전화번호가 아닙니다.");
+          // return ("알맞은 전화번호가 아닙니다.");
         }
         return null;
       },
@@ -189,69 +189,86 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-              children:<Widget>[
+        backgroundColor: Colors.white,
+        body: Center(
+          child: SingleChildScrollView(
+              child: Column(children: [
+            Stack(children: <Widget>[
               Container(
-                height: 200,
-                child: HeaderWidget(_headerHeight, true, Image.asset('assets/logo_img.png'))
-            ),Container(
-              child: Column(children: [SizedBox(height: 20,),
-            IconButton(onPressed: (){ Navigator.of(context).pop();}, icon: Icon(Icons.arrow_back))],)
-          )]),              
-              SafeArea(
-                child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0), //가로폭이 줄어듦
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                        children: [
-                          SizedBox(width: 10,),
-                          Text("Sign up", textAlign: TextAlign.left, 
-                          style: TextStyle(fontSize: 20,  fontWeight: FontWeight.bold),)]),
-                    SizedBox(height: 20,),                    
-                    emailField,
-                    SizedBox(
-                      height: 10,
+                  height: 200,
+                  child: HeaderWidget(
+                      _headerHeight, true, Image.asset('assets/logo_img.png'))),
+              Container(
+                  child: Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.arrow_back))
+                ],
+              ))
+            ]),
+            SafeArea(
+              child: Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(36.0), //가로폭이 줄어듦
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Sign up",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        emailField,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        pwField,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        confirmpwField,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        nicknameField,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        phoneField,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SignUpButton,
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
                     ),
-                    pwField,
-                    SizedBox(
-                      height: 10,
-                    ),
-                    confirmpwField,
-                    SizedBox(
-                      height: 10,
-                    ),
-                    nicknameField,
-                    SizedBox(
-                      height: 10,
-                    ),
-                    phoneField,
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SignUpButton,
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-            ])),
-    ));
+          ])),
+        ));
   }
 
   void signUp(String email, String password) async {
@@ -288,8 +305,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
         .doc(user.uid) //doc=특정 documentId를 통해 단일의 document에 접근한다.
         .set(userModel
             .toMap()); //set=documnet의 내용을 넘어온 data(userModel.toMap())로 대체해버린다
-    // Fluttertoast.showToast(msg: "Account created succesfully :) ");
-    Fluttertoast.showToast(msg: "성공적으로 계정이 생성되었습니다 :) ");
+    Fluttertoast.showToast(msg: "Account created succesfully :) ");
+    // Fluttertoast.showToast(msg: "성공적으로 계정이 생성되었습니다 :) ");
 
     Navigator.pushAndRemoveUntil(
         (context),
