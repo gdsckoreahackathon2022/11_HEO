@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:study/model/list_ingredient.dart';
-import 'package:study/model/list_item.dart';
 import 'home_dialog.dart';
 
 class ShowList extends StatefulWidget {
@@ -28,7 +27,7 @@ class _ShowListState extends State<ShowList> {
 
   Widget buildItem(BuildContext context) {
     return GestureDetector(
-      onTap: (){Dialog(widget.ingredient);},
+      onTap: (){dialog(widget.ingredient);},
       child: Container(
         height: 75,
         margin: EdgeInsets.fromLTRB(25, 3, 25, 10),
@@ -86,7 +85,7 @@ class _ShowListState extends State<ShowList> {
                         fontWeight: FontWeight.bold)));
   }
   //홈 다이얼로그 창
-  void Dialog(ListIngredient ingredient) {
+  void dialog(ListIngredient ingredient) {
     showDialog(
         context: context,
         barrierDismissible: false,
