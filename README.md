@@ -1,8 +1,12 @@
-# study
+# Bium🌱
 
 A new Flutter project.
 
-## Getting Started
+## 팀원 소개
+- 한정우(Leader) - 프론트엔드, 백엔드
+- 조준장 - 프론트엔드, 백엔드
+- 조예린 - 프론트엔드, 백엔드, 디자인
+- 민새미 - 프론트엔드, 백엔드
 
 This project is a starting point for a Flutter application.
 
