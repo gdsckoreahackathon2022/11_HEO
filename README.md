@@ -2,8 +2,8 @@
 
 ![image](https://www.notion.so/Readme-6fd49cd64deb4903ab3528afa6d71dd2#321b35b94b994bfb8d6c239be805d544)
 
-### 팀원 소개
-ㅡㅡㅡ
+## 팀원 소개
+---
 - 한정우(Leader) - 프론트엔드, 백엔드
 - 조준장 - 프론트엔드, 백엔드
 - 조예린 - 프론트엔드, 백엔드, 디자인
