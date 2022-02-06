@@ -2,6 +2,8 @@
 ![image](https://user-images.githubusercontent.com/59803206/152623747-7156b167-491c-4b54-967c-aa1d05953496.png)  
 **'비움'**은 음식물 쓰레기의 감소를 목적으로 한 애플리케이션으로 일상생활에서 음식물 쓰레기를 최소화하기 위한 실천을 장려한다.  
 [👉Bium PPT](https://github.com/gdscHEO/heoproject/files/8007219/HEO.pptx)
+[👉Bium App](https://drive.google.com/file/d/1-PwA_LUkR64sr1OVmOkjM9KZYj_bD00A/view?usp=sharing)
+
 <br>
 
 # 목차
